@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akem", "Akem\Akem.csproj", "{6C602608-1D8E-4419-B8EF-F5E8B580A97C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Processing", "Processing\Processing.csproj", "{20C1242E-00B2-4537-9509-B1138F6EDBCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "colormine", "ColorMine\colormine.csproj", "{AE7DC769-4A71-49BA-BDD7-281F3E70B02A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C602608-1D8E-4419-B8EF-F5E8B580A97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C602608-1D8E-4419-B8EF-F5E8B580A97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C602608-1D8E-4419-B8EF-F5E8B580A97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C602608-1D8E-4419-B8EF-F5E8B580A97C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C1242E-00B2-4537-9509-B1138F6EDBCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C1242E-00B2-4537-9509-B1138F6EDBCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C1242E-00B2-4537-9509-B1138F6EDBCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C1242E-00B2-4537-9509-B1138F6EDBCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7DC769-4A71-49BA-BDD7-281F3E70B02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7DC769-4A71-49BA-BDD7-281F3E70B02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7DC769-4A71-49BA-BDD7-281F3E70B02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7DC769-4A71-49BA-BDD7-281F3E70B02A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
