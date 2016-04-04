@@ -28,6 +28,7 @@ namespace Akem
         public MainWindow()
         {
             InitializeComponent();
+            // some comment
         }
 
         private void ImageScrollViewerViewer_DragEnter(object sender, DragEventArgs e)
