@@ -59,6 +59,7 @@
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Converters\PhysicalSizeToSizeUnitConverter.cs" />
     <Compile Include="Converters\TextToIntConverter.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="VM\GroutSize.cs" />
     <Compile Include="VM\GroutViewModel.cs" />
     <Compile Include="VM\PaletteViewModel.cs" />

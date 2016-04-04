@@ -15,9 +15,12 @@
         <WindowChrome CaptionHeight="150" />
     </WindowChrome.WindowChrome>6-->
     <Window.Resources>
+        <controls:MozaicCanvas x:Key="MozaicCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <vm:GroutViewModel x:Key="GroutViewModel"/>
         <vm:PaletteViewModel x:Key="PaletteViewModel"/>
-        <vm:RenderViewModel x:Key="RenderViewModel"/>
+        <vm:RenderViewModel x:Key="RenderViewModel" Canvas="{StaticResource MozaicCanvas}" 
+                            Grout="{StaticResource GroutViewModel}"
+                            Tiles="{StaticResource PaletteViewModel}"/>
         <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter"/>
         <converters:PhysicalSizeToSizeUnitConverter x:Key="PhysicalSizeToSizeUnitConverter"/>
         <converters:TextToIntConverter  x:Key="TextToIntConverter"/>
@@ -58,11 +61,6 @@
         </Style>
     </Window.Resources>
             <Grid Name="MainGrid">
-            <Grid.Resources>
-            <ResourceDictionary>
-                <controls:MozaicCanvas x:Key="MozaicCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </ResourceDictionary>
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*"/>
             <ColumnDefinition Width="1*"/>
@@ -206,7 +204,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" Click="Render">RENDER</Button>
+                        <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=RenderCommand}">RENDER</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center">SHUFFLE</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center">PRINT</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center">SAVE</Button>
