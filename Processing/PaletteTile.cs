@@ -1,5 +1,8 @@
-﻿using System.Windows.Media;
+﻿
+using System.Drawing;
+using System.Globalization;
 using ColorMine.ColorSpaces;
+using Color = System.Windows.Media.Color;
 
 namespace Processing
 {
@@ -8,16 +11,29 @@ namespace Processing
         public int Id { get; set; }
         public Rgb Rgb { get; set; }
         public Color Color { get; set; }
+        public Bitmap Bitmap { get; set; }
         public double Height { get; set; }
         public double Width { get; set; }
 
         public PaletteTile(int id, Color color, double widthAndHeight)
+            : this(id, widthAndHeight, new Rgb(color.R, color.G, color.B))
+        {
+            Color = color;
+        }
+
+        public PaletteTile(TileInfo tileInfo, double widthAndHeight)
+            : this(tileInfo.Id, widthAndHeight, tileInfo.Rgb)
+        {
+            Bitmap = tileInfo.TileBitmap;
+        }
+
+        protected PaletteTile(int id, double widthAndHeight, Rgb rgb)
         {
             Id = id;
-            Color = color;
-            Rgb = new Rgb(Color.R, Color.G, Color.B);
             Width = widthAndHeight;
             Height = widthAndHeight;
+            Rgb = rgb;
         }
     }
+
 }

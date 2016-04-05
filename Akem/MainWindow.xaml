@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:Akem.Controls"
         xmlns:vm="clr-namespace:Akem.VM"
         xmlns:converters="clr-namespace:Akem.Converters"
+        xmlns:templates="clr-namespace:Akem.Templates"
         mc:Ignorable="d"
         Title="New Project"
         WindowState="Maximized"
@@ -15,15 +16,6 @@
         <WindowChrome CaptionHeight="150" />
     </WindowChrome.WindowChrome>6-->
     <Window.Resources>
-        <controls:MozaicCanvas x:Key="MozaicCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <vm:GroutViewModel x:Key="GroutViewModel"/>
-        <vm:PaletteViewModel x:Key="PaletteViewModel"/>
-        <vm:RenderViewModel x:Key="RenderViewModel" Canvas="{StaticResource MozaicCanvas}" 
-                            Grout="{StaticResource GroutViewModel}"
-                            Tiles="{StaticResource PaletteViewModel}"/>
-        <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter"/>
-        <converters:PhysicalSizeToSizeUnitConverter x:Key="PhysicalSizeToSizeUnitConverter"/>
-        <converters:TextToIntConverter  x:Key="TextToIntConverter"/>
         <Style TargetType="Control" x:Key="Basic">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="White"/>
@@ -34,7 +26,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        
+
         <Style TargetType="{x:Type ToggleButton}">
             <Setter Property="Width" Value="64"/>
             <Setter Property="Height" Value="64"/>
@@ -44,11 +36,15 @@
         <Style TargetType="GroupBox" BasedOn="{StaticResource Basic}">
             <Setter Property="Padding" Value="0 5 0 0"/>
         </Style>
-        <Style x:Key="TileRectangle" TargetType="Rectangle">
+        <Style x:Key="TileColorRectangle" TargetType="Rectangle">
             <Setter Property="Width" Value="20"/>
-            <Setter Property="Height" Value="20"/>            
+            <Setter Property="Height" Value="20"/>
         </Style>
-        <Style x:Key="GroutColorRectangle" TargetType="Rectangle" BasedOn="{StaticResource TileRectangle}">           
+        <Style x:Key="TileBitmapRectangle" TargetType="Image">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+        </Style>
+        <Style x:Key="GroutColorRectangle" TargetType="Rectangle" BasedOn="{StaticResource TileColorRectangle}">
             <EventSetter Event="MouseDown" Handler="GrouteColorSelected"></EventSetter>
         </Style>
 
@@ -59,6 +55,48 @@
         <Style x:Key="OperationButton" TargetType="Button" BasedOn="{StaticResource PaletteButton}">
             <Setter Property="Width" Value="40"/>
         </Style>
+        <ControlTemplate x:Key="tplFlatButton" TargetType="{x:Type Button}">
+            <Border Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          TextElement.Foreground="{TemplateBinding Foreground}"
+                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                          TextElement.FontSize="{TemplateBinding FontSize}"
+                          TextElement.FontStretch="{TemplateBinding FontStretch}"
+                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="stlFlatButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Template" Value="{StaticResource tplFlatButton}"  />          
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <controls:MozaicCanvas x:Key="MozaicCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <vm:GroutViewModel x:Key="GroutViewModel"/>
+        <vm:PaletteViewModel x:Key="PaletteViewModel"/>
+        <vm:RenderViewModel x:Key="RenderViewModel" Canvas="{StaticResource MozaicCanvas}" 
+                            Grout="{StaticResource GroutViewModel}"
+                            Tiles="{StaticResource PaletteViewModel}"/>
+        <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter"/>
+        <converters:PhysicalSizeToSizeUnitConverter x:Key="PhysicalSizeToSizeUnitConverter"/>
+        <converters:TextToIntConverter  x:Key="TextToIntConverter"/>
+        <converters:BitmapToBitmapImageConverter  x:Key="BitmapToBitmapImageConverter"/>
+        
+        <DataTemplate x:Key="ColorTemplate">
+            <Rectangle Fill="{Binding Path=Color, Converter={StaticResource ColorToSolidColorBrushConverter}}" Style="{StaticResource TileColorRectangle}"
+                                           MouseDown="TileSelectionChanged"/>
+        </DataTemplate>
+        <DataTemplate x:Key="BitmapTemplate">
+            <Button Style="{StaticResource stlFlatButton}" Command="{Binding Source={StaticResource PaletteViewModel} ,Path=SelectTileCommand}" CommandParameter="{Binding}">
+            <Image  Stretch="Uniform" Source="{Binding Path=Bitmap, Converter={StaticResource BitmapToBitmapImageConverter}}" Style="{StaticResource TileBitmapRectangle}"/>
+                </Button>
+        </DataTemplate>            
+        <templates:TileTemplateSelector x:Key="TileTemplateSelector" ColorTemplate="{StaticResource ColorTemplate}" BitmapTemplate="{StaticResource BitmapTemplate}"/>      
     </Window.Resources>
             <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -158,35 +196,20 @@
             </GroupBox>            
             <GroupBox Header="Palette">
                 <StackPanel Name="PalettePanel" DataContext="{StaticResource PaletteViewModel}" >
-                    <Rectangle DataContext="{Binding Path=SelectedTile}" Fill="{Binding Path=Color, Converter={StaticResource ColorToSolidColorBrushConverter}}" 
-                               Width="{Binding Path=Width, Converter={StaticResource PhysicalSizeToSizeUnitConverter}}" 
-                               Height="{Binding Path=Height, Converter={StaticResource PhysicalSizeToSizeUnitConverter}}" Margin="0 0 0 5"/>
-                    <ItemsControl ItemsSource="{Binding PaletteTiles}">
+                    <ItemsControl ItemsSource="{Binding SelectedTiles}" ItemTemplateSelector="{StaticResource TileTemplateSelector}" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Rectangle Fill="{Binding Path=Color, Converter={StaticResource ColorToSolidColorBrushConverter}}" Style="{StaticResource TileRectangle}"
-                                           MouseDown="TileSelectionChanged"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding PaletteTiles}" ItemTemplateSelector="{StaticResource TileTemplateSelector}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                     </ItemsControl>                    
-<!--                    <WrapPanel>
-                        <Rectangle Fill="Indigo" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="ForestGreen" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="Firebrick" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="DarkOliveGreen" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="DarkCyan" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="Coral" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="Brown" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="RoyalBlue" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="SeaGreen" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="Yellow" Style="{StaticResource TileRectangle}"/>
-                        <Rectangle Fill="Teal" Style="{StaticResource TileRectangle}"/>
-                    </WrapPanel>-->
                     <WrapPanel FlowDirection="RightToLeft">
                         <Button Margin="2" Style="{StaticResource PaletteButton}">DEL</Button>
                         <Button Style="{StaticResource PaletteButton}">ADD</Button>

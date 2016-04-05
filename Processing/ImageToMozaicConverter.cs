@@ -15,19 +15,9 @@ using Color = System.Drawing.Color;
 
 namespace Processing
 {
-    public class TileInfo
-    {
-        public Bitmap TileBitmap { get; set; }
-        public Rgb Rgb { get; set; }
-        public int Id { get; set; }
-    }
-
-
     public class ImageToMozaicConverter
     {
         private readonly Bitmap _image;
-        private readonly int _tileSize;
-        private readonly ObservableCollection<PaletteTile> _paletteTiles;
         private readonly int _desirableWidth;
         private readonly int _desirableHeight;
         private readonly AvgColorCalculator _avgColorCalculator;
@@ -43,8 +33,6 @@ namespace Processing
         public ImageToMozaicConverter(string imageFile, int tileSize, ObservableCollection<PaletteTile> paletteTiles, int desirableWidth, int desirableHeight)
         {
             _image = new Bitmap(imageFile);
-            _tileSize = tileSize;
-            _paletteTiles = paletteTiles;
 
             _desirableWidth = desirableWidth;
 
@@ -53,9 +41,7 @@ namespace Processing
             _gridHorSteps = _desirableWidth / tileSize;
             _gridVerSteps = _desirableHeight / tileSize;
 
-            float scale = Math.Min((float)_gridHorSteps / _image.Width, (float)_gridVerSteps / _image.Height);
-
-         
+            float scale = Math.Min((float)_gridHorSteps / _image.Width, (float)_gridVerSteps / _image.Height);         
 
             var scaleWidth = (_image.Width *  scale);
             var scaleHeight =(_image.Height * scale);
@@ -156,7 +142,7 @@ namespace Processing
 
                     var findBestMatchTitle = _colorFilter.FindBestTile(new Rgb(pixel.R, pixel.G, pixel.B));
 
-                    var newRgb = findBestMatchTitle.Color;
+                    var newRgb = findBestMatchTitle.Rgb;
                     var paletteColor = new Rgb { R = newRgb.R, G = newRgb.G, B = newRgb.B };
                     SetErrorForPixel(Rgb, paletteColor, y, x, newImage.Width, newImage.Height, newImage);
 
@@ -165,7 +151,6 @@ namespace Processing
                     /*var newRgbAAZ = newColor.ToRgb();*/
                     /* convertedImGraphics.FillRectangle(
                         new SolidBrush(Color.FromARgb((int) newRgb.R, (int) newRgb.G, (int) newRgb.B)), x, y, 1, 1);*/
-
                 }
             }
 
@@ -263,22 +248,23 @@ namespace Processing
 
     public class ColorFilter
     {
-        public TileContainer TileContainer;
+
         private readonly IColorSpaceComparison _comparer;
         private readonly List<int> _usedTiles;
+        private List<PaletteTile> _tiles;
 
         public ColorFilter(IEnumerable<PaletteTile> paletteTiles)
         {
             _comparer = new Cie1976Comparison();
             _usedTiles = new List<int>();
-            TileContainer = new TileContainer(paletteTiles.ToList());
+            _tiles = paletteTiles.ToList();
         }
 
         public PaletteTile FindBestTile(Rgb Rgb)
         {
             double minimumDeltaE = double.MaxValue;
             PaletteTile result = null;
-            foreach (var tileInfo in TileContainer.PaletteTiles)
+            foreach (var tileInfo in _tiles)
             {
                 var deltaE = GetDifferenceUsingCie1976Comparison(tileInfo.Rgb, Rgb);
                 if (deltaE < minimumDeltaE)

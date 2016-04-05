@@ -38,6 +38,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,10 +58,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Converters\PhysicalSizeToSizeUnitConverter.cs" />
     <Compile Include="Converters\TextToIntConverter.cs" />
     <Compile Include="ImageHelper.cs" />
+    <Compile Include="Templates\TileTemplateSelector.cs" />
     <Compile Include="VM\GroutSize.cs" />
     <Compile Include="VM\GroutViewModel.cs" />
     <Compile Include="VM\PaletteViewModel.cs" />

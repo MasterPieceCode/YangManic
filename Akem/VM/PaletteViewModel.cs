@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Processing;
 
 namespace Akem.VM
@@ -14,7 +16,11 @@ namespace Akem.VM
     public class PaletteViewModel: INotifyPropertyChanged
     {
         private PaletteTile _selectedTile;
+
         public ObservableCollection<PaletteTile> PaletteTiles { get; set; }
+        public ObservableCollection<PaletteTile> SelectedTiles { get; set; }
+        public ICommand SelectTileCommand { get; set; }
+
 
         public PaletteTile SelectedTile
         {
@@ -28,35 +34,47 @@ namespace Akem.VM
 
         public PaletteViewModel()
         {
-            PaletteTiles = new ObservableCollection<PaletteTile>
+            SelectTileCommand = new SelectTileCommand(this);
+            SelectedTiles = new ObservableCollection<PaletteTile>();
+            PaletteTiles = new ObservableCollection<PaletteTile>();
+            foreach (var tileInfo in TileLibrary.TileBase)
             {
-                                new PaletteTile(0, Colors.White, 10),
-                new PaletteTile(1, Colors.Black, 10),
-                new PaletteTile(2, Colors.Gray, 10),
-                new PaletteTile(3, Colors.DarkGray, 10),
-                new PaletteTile(3, Colors.LightSlateGray, 10),
-                new PaletteTile(3, Colors.LightGray, 10),
-                new PaletteTile(3, Colors.DarkSlateGray, 10),
-                //new PaletteTile(3, Colors.Coral, 10),
-                //new PaletteTile(3, Colors.Yellow, 10)
-
-/*
-                new PaletteTile(0, Colors.Indigo, 10),
-                new PaletteTile(1, Colors.ForestGreen, 10),
-                new PaletteTile(2, Colors.Firebrick, 10),
-                new PaletteTile(3, Colors.DarkOliveGreen, 10),
-                new PaletteTile(4, Colors.DarkCyan, 10),
-                new PaletteTile(5, Colors.Coral, 10),
-                new PaletteTile(6, Colors.Brown, 10),
-                new PaletteTile(7, Colors.RoyalBlue, 10),
-                new PaletteTile(8, Colors.SeaGreen, 10),
-                new PaletteTile(9, Colors.Yellow, 10),
-                new PaletteTile(10, Colors.Teal, 10)
-*/
-            };
+                PaletteTiles.Add(new PaletteTile(tileInfo.Value, 10));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
+    }
 
+    public class SelectTileCommand : ICommand
+    {
+        private readonly PaletteViewModel _viewModel;
+
+        public SelectTileCommand(PaletteViewModel viewModel)
+        {
+            _viewModel = viewModel;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _viewModel.PaletteTiles.Any() || _viewModel.SelectedTiles.Any();
+        }
+
+        public void Execute(object parameter)
+        {
+            var palleteTile = (PaletteTile) parameter;
+            if (_viewModel.PaletteTiles.SingleOrDefault(i => i.Id == palleteTile.Id) != null)
+            {
+                _viewModel.PaletteTiles.Remove(palleteTile);
+                _viewModel.SelectedTiles.Add(palleteTile);
+            }
+            else
+            {
+                _viewModel.SelectedTiles.Remove(palleteTile);
+                _viewModel.PaletteTiles.Add(palleteTile);
+            }
+        }
+
+        public event EventHandler CanExecuteChanged;
     }
 }

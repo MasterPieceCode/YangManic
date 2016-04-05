@@ -15,10 +15,14 @@ namespace Processing
         static TileLibrary()
         {
             TileBase = new Dictionary<int, TileInfo>();
+            LoadContainer();
         }
 
+        protected TileLibrary()
+        {
+        }
 
-        public void LoadContainer()
+        private static void LoadContainer()
         {
             var directory = new DirectoryInfo("Tiles");
 
