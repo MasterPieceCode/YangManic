@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ColorMine.ColorSpaces;
-using ColorMine.ColorSpaces.Comparisons;
 using Color = System.Drawing.Color;
 
 namespace Processing
@@ -30,7 +28,7 @@ namespace Processing
 
 
 
-        public ImageToMozaicConverter(string imageFile, int tileSize, ObservableCollection<PaletteTile> paletteTiles, int desirableWidth, int desirableHeight)
+        public ImageToMozaicConverter(string imageFile, int tileSize, IEnumerable<PaletteTile> paletteTiles, int desirableWidth, int desirableHeight)
         {
             _image = new Bitmap(imageFile);
 
@@ -244,134 +242,4 @@ namespace Processing
             return (byte)diff;
         }
     }
-
-
-    public class ColorFilter
-    {
-
-        private readonly IColorSpaceComparison _comparer;
-        private readonly List<int> _usedTiles;
-        private List<PaletteTile> _tiles;
-
-        public ColorFilter(IEnumerable<PaletteTile> paletteTiles)
-        {
-            _comparer = new Cie1976Comparison();
-            _usedTiles = new List<int>();
-            _tiles = paletteTiles.ToList();
-        }
-
-        public PaletteTile FindBestTile(Rgb Rgb)
-        {
-            double minimumDeltaE = double.MaxValue;
-            PaletteTile result = null;
-            foreach (var tileInfo in _tiles)
-            {
-                var deltaE = GetDifferenceUsingCie1976Comparison(tileInfo.Rgb, Rgb);
-                if (deltaE < minimumDeltaE)
-                {
-                    minimumDeltaE = deltaE;
-                    result = tileInfo;
-                }
-            }
-
-            return result;
-        }
-
-
-        public PaletteTile FindTitle(Rgb Rgb)
-        {
-            var threshold = 1;
-            PaletteTile result = null;
-            var hitMatch = false;
-
-            while (result == null)
-            {
-                hitMatch = false;
-                foreach (var title in TileContainer.PaletteTiles)
-                {
-                    if (GetDifferenceUsingCie1976Comparison(title.Rgb, Rgb) <= threshold)
-                    {
-                        // if we use title, then go next
-                        /*  if (_usedTiles.Contains(title.Key))
-                          {
-                              hitMatch = true;
-                              continue;
-                          }*/
-
-                        result = title;
-                        _usedTiles.Add(title.Id);
-                        break;
-                    }
-                }
-
-                /*  var oldThreshold = threshold;
-
-                  if (result == null)
-                  {
-                      if (hitMatch)
-                      {
-                          foreach (var title in TileContainer.PaletteTiles)
-                          {
-                              if (!_usedTiles.Contains(title.Key) && GetDifferenceUsingCie1976Comparison(title.Value.Rgb, Rgb) <= threshold + 5)
-                              {
-                                  result = title.Value;
-                                  _usedTiles.Add(title.Key);
-                                  break;
-                              }
-                          }
-                      }
-
-                      if (result == null)
-                      {
-                          threshold = oldThreshold;
-                          var _usedTitlesCopy = _usedTiles.ToList();
-
-                          foreach (var usedTile in _usedTitlesCopy)
-                          {
-                              var title = TileContainer.PaletteTiles[usedTile];
-                              if (GetDifferenceUsingCie1976Comparison(title.Rgb, Rgb) <= threshold)
-                              {
-                                  result = title;
-                                  break;
-                              }
-                          }
-                      }
-                  }*/
-
-                threshold += 1;
-            }
-
-            return result;
-        }
-
-        public double GetDifference(Rgb color1, Rgb color2)
-        {
-            var redMass = (color1.R + color2.R) / 2;
-            var deltaRed = color1.R - color2.R;
-            var deltaGreen = color1.G - color2.G;
-            var deltaBlue = color1.B - color2.B;
-
-            /*return Math.Sqrt(Math.Pow(deltaRed, 2) + Math.Pow(deltaGreen, 2) + Math.Pow(deltaBlue, 2));*/
-
-
-            return Math.Sqrt((2 + redMass / 256) * Math.Pow(deltaRed, 2) + 4 * Math.Pow(deltaGreen, 2) +
-                          (2 + (255 - redMass) / 256) * Math.Pow(deltaBlue, 2));
-
-        }
-
-        public double GetDifferenceUsingCie1976Comparison(Rgb color1, Rgb color2)
-        {
-
-            /*            var colorLab1 = new Lab() { L = color1.R, A = color1.G, B = color1.B };
-                        var colorLab2 = new Lab() { L = color2.R, A = color2.G, B = color2.B };*/
-
-
-
-            var colorRgb1 = new Rgb { R = color1.R, G = color1.G, B = color1.B };
-            var colorRgb2 = new Rgb { R = color2.R, G = color2.G, B = color2.B };
-
-            return _comparer.Compare(colorRgb1, colorRgb2);
-        }
-    }
-
 }

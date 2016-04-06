@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AvgColorCalculator.cs" />
+    <Compile Include="ColorFilter.cs" />
     <Compile Include="ImageToMozaicConverter.cs" />
     <Compile Include="PaletteTile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

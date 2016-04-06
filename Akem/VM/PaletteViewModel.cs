@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Akem.Annotations;
 using Processing;
 
 namespace Akem.VM
@@ -28,7 +30,7 @@ namespace Akem.VM
             set
             {
                 _selectedTile = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("SelectedTile"));
+                OnPropertyChanged();
             }
         }
 
@@ -36,6 +38,7 @@ namespace Akem.VM
         {
             SelectTileCommand = new SelectTileCommand(this);
             SelectedTiles = new ObservableCollection<PaletteTile>();
+            SelectedTiles.CollectionChanged += SelectedTilesCollectionChanged;
             PaletteTiles = new ObservableCollection<PaletteTile>();
             foreach (var tileInfo in TileLibrary.TileBase)
             {
@@ -43,7 +46,21 @@ namespace Akem.VM
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        private void SelectedTilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("SelectedTiles");
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 
     public class SelectTileCommand : ICommand

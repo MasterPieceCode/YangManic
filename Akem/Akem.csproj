@@ -58,15 +58,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\PrintCommand.cs" />
     <Compile Include="Converters\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Converters\PhysicalSizeToSizeUnitConverter.cs" />
     <Compile Include="Converters\TextToIntConverter.cs" />
     <Compile Include="ImageHelper.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Templates\TileTemplateSelector.cs" />
     <Compile Include="VM\GroutSize.cs" />
     <Compile Include="VM\GroutViewModel.cs" />
+    <Compile Include="VM\MatrixPrint.cs" />
     <Compile Include="VM\PaletteViewModel.cs" />
+    <Compile Include="Commands\RenderCommand.cs" />
     <Compile Include="VM\RenderViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
