@@ -1,14 +1,8 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Akem.Annotations;
 using Akem.Commands;
@@ -66,9 +60,20 @@ namespace Akem.VM
             set
             {
                 _fileName = value;
+                Image = new Bitmap(_fileName);
+
+                _isAdjusting = true;
+
+                Width = Image.Width;
+                Height = Image.Height;
+
+                _isAdjusting = false;
+
                 OnPropertyChanged();
             }
         }
+
+        public Bitmap Image { get; private set; }
 
         public bool KeepRatio { get; set; }
 
@@ -110,27 +115,24 @@ namespace Akem.VM
         public RenderViewModel()
         {
             RenderCommand = new RenderCommand(this);
-            Width = 500;
-            Height = 500;
             KeepRatio = true;
         }
 
-        private double GetRatio(Func<Size, double> rationFunc, int current)
+        private int GetRatio(Func<Size, double> ratio, int current, int oppositeDimension)
         {
-            if (string.IsNullOrEmpty(FileName))
+            if (Image == null)
             {
                 return current;
-            }
 
-            var bitmap = new Bitmap(FileName);
-            return rationFunc(bitmap.Size);
+            }
+            return (int)(oppositeDimension * ratio(Image.Size));
         }
 
         private void AdjsutHeight()
         {
             _isAdjusting = true;
 
-            Height = (int)(Width * GetRatio(size => ((double)size.Height / size.Width), Height));
+            Height =  GetRatio(size => ((double)size.Height / size.Width), Height, Width);
 
             _isAdjusting = false;
         }
@@ -139,7 +141,7 @@ namespace Akem.VM
         {
             _isAdjusting = true;
 
-            Width = (int)(Height * GetRatio(size => (double)size.Width / size.Height, Width));
+            Width = GetRatio(size => (double)size.Width / size.Height, Width, Height);
 
             _isAdjusting = false;
         }

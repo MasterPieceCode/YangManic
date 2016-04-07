@@ -20,7 +20,7 @@ namespace Akem.Commands
         private List<MatrixPrintInfo> _matrixPrints;
         private readonly MatrixPrint _matrixPrint;
         private bool _mapProccessed;
-        private const int MatrixSize = 30;
+        private const int MatrixSize = 29;
 
         public PrintCommand()
         {
@@ -96,7 +96,7 @@ namespace Akem.Commands
             e.Graphics.DrawString(_pageNumber.ToString(),
                 new Font(fontFamily, pageNumberFontSize, FontStyle.Regular),
                 new SolidBrush(Color.Black),
-                new RectangleF((marginBounds.Right - pageNumberFontSize) / 2, marginBounds.Bottom - pageNumberFontSize, marginBounds.Right / 2, pageNumberFontSize * (float)1.5));
+                new RectangleF((marginBounds.Right - pageNumberFontSize) / (float)2, marginBounds.Bottom - pageNumberFontSize, marginBounds.Right / (float)2, pageNumberFontSize * (float)1.5));
 
             if (_pageNumber < _matrixPrints.Count)
             {
@@ -132,13 +132,10 @@ namespace Akem.Commands
         {
             var matrix = new ColorMatrix {Matrix33 = (float) 0.3};
 
-            //set the opacity  
-
-            //create image attributes  
             var attributes = new ImageAttributes();
 
-            //set the color(opacity) of the image  
             attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);    
+
             // draw tile
             graphics.DrawImage(tile.Bitmap,
                 new Rectangle(marginBounds.Left + tileCol*stepSize, marginBounds.Top + tileRow*stepSize, stepSize,

@@ -28,9 +28,9 @@ namespace Processing
 
 
 
-        public ImageToMozaicConverter(string imageFile, int tileSize, IEnumerable<PaletteTile> paletteTiles, int desirableWidth, int desirableHeight)
+        public ImageToMozaicConverter(Bitmap bitmap, int tileSize, IEnumerable<PaletteTile> paletteTiles, int desirableWidth, int desirableHeight)
         {
-            _image = new Bitmap(imageFile);
+            _image = bitmap;
 
             _desirableWidth = desirableWidth;
 

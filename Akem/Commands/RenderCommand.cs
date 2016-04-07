@@ -46,7 +46,7 @@ namespace Akem.Commands
 
         public void Execute(object parameter)
         {
-            var mozaicResult = new ImageToMozaicConverter(_renderViewModel.FileName, TileSize, _renderViewModel.Tiles.SelectedTiles, _renderViewModel.Width, _renderViewModel.Height).Convert();
+            var mozaicResult = new ImageToMozaicConverter(_renderViewModel.Image, TileSize, _renderViewModel.Tiles.SelectedTiles, _renderViewModel.Width, _renderViewModel.Height).Convert();
             _renderViewModel.MozaicTiles = mozaicResult.Tiles;
             FillMozaicStatisitcs(mozaicResult);
             
@@ -62,14 +62,12 @@ namespace Akem.Commands
         {
             _renderViewModel.MozaicStatistics = new ObservableCollection<MozaicStatistic>();
 
-            foreach (var statistic in mozaicResult.MozaicStatisitcs)
+            foreach (var mozaicStatistic in mozaicResult.MozaicStatisitcs.Select(statistic => new MozaicStatistic
             {
-                var mozaicStatistic = new MozaicStatistic
-                {
-                    Count = statistic.Value,
-                    Tile = _renderViewModel.Tiles.SelectedTiles.First(t => t.Id == statistic.Key)
-                };
-
+                Count = statistic.Value,
+                Tile = _renderViewModel.Tiles.SelectedTiles.First(t => t.Id == statistic.Key)
+            }))
+            {
                 _renderViewModel.MozaicStatistics.Add(mozaicStatistic);
             }
         }
