@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\PrintCommand.cs" />
+    <Compile Include="Commands\ShowStatisticsCommand.cs" />
     <Compile Include="Converters\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Converters\PhysicalSizeToSizeUnitConverter.cs" />
@@ -66,13 +67,21 @@
     <Compile Include="ImageHelper.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Templates\TileTemplateSelector.cs" />
+    <Compile Include="Views\StatisticsWindow.xaml.cs">
+      <DependentUpon>StatisticsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VM\GroutSize.cs" />
     <Compile Include="VM\GroutViewModel.cs" />
     <Compile Include="VM\MatrixPrint.cs" />
     <Compile Include="VM\PaletteViewModel.cs" />
     <Compile Include="Commands\RenderCommand.cs" />
     <Compile Include="VM\RenderViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="VM\StatisitcsViewModel.cs" />
+    <Page Include="Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,10 +90,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\MozaicCanvas.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\StatisticsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -103,6 +116,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

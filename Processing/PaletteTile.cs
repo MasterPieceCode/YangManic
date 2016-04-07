@@ -15,12 +15,6 @@ namespace Processing
         public double Height { get; set; }
         public double Width { get; set; }
 
-        public PaletteTile(int id, Color color, double widthAndHeight)
-            : this(id, widthAndHeight, new Rgb(color.R, color.G, color.B))
-        {
-            Color = color;
-        }
-
         public PaletteTile(TileInfo tileInfo, double widthAndHeight)
             : this(tileInfo.Id, widthAndHeight, tileInfo.Rgb)
         {
@@ -33,6 +27,11 @@ namespace Processing
             Width = widthAndHeight;
             Height = widthAndHeight;
             Rgb = rgb;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 

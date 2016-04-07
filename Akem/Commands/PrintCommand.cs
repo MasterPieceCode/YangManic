@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
@@ -129,12 +130,23 @@ namespace Akem.Commands
 
         private static void DrawMatrixTile(Graphics graphics, PaletteTile tile, int tileRow, int tileCol, Rectangle marginBounds, int stepSize, FontFamily fontFamily)
         {
+            var matrix = new ColorMatrix {Matrix33 = (float) 0.3};
+
+            //set the opacity  
+
+            //create image attributes  
+            var attributes = new ImageAttributes();
+
+            //set the color(opacity) of the image  
+            attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);    
             // draw tile
-            graphics.DrawImage(tile.Bitmap, new Rectangle(marginBounds.Left + tileCol * stepSize, marginBounds.Top + tileRow * stepSize, stepSize, stepSize), new Rectangle(0, 0, tile.Bitmap.Size.Width, tile.Bitmap.Size.Height), GraphicsUnit.Pixel);
+            graphics.DrawImage(tile.Bitmap,
+                new Rectangle(marginBounds.Left + tileCol*stepSize, marginBounds.Top + tileRow*stepSize, stepSize,
+                    stepSize), 0, 0, tile.Bitmap.Size.Width, tile.Bitmap.Size.Height, GraphicsUnit.Pixel, attributes);
 
             // draw tile id
             graphics.DrawString(tile.Id.ToString(),
-                new Font(fontFamily, (float)(stepSize * 0.7), FontStyle.Regular),
+                new Font(fontFamily, (float)(stepSize * 0.3), FontStyle.Regular),
                 new SolidBrush(Color.Black),
                 new RectangleF(marginBounds.Left + tileCol * stepSize, marginBounds.Top + tileRow * stepSize, stepSize, stepSize));
 

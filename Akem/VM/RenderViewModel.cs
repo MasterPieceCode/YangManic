@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace Akem.VM
         private int _height;
         private string _fileName;
         private PaletteViewModel _tiles;
+        private ObservableCollection<MozaicStatistic> _mozaicStatistics;
 
         public int Width
         {
@@ -30,9 +32,17 @@ namespace Akem.VM
             set
             {
                 _width = value;
+
+                if (!_isAdjusting && KeepRatio)
+                {
+                    AdjsutHeight();
+                }
+                
                 OnPropertyChanged();
             }
         }
+
+        private bool _isAdjusting;
 
         public int Height
         {
@@ -40,9 +50,15 @@ namespace Akem.VM
             set
             {
                 _height = value;
+
+                if (!_isAdjusting && KeepRatio)
+                {
+                    AdjustWidth();
+                }
                 OnPropertyChanged();
             }
         }
+
 
         public string FileName
         {
@@ -53,6 +69,8 @@ namespace Akem.VM
                 OnPropertyChanged();
             }
         }
+
+        public bool KeepRatio { get; set; }
 
         public ICommand RenderCommand { get; set; }
         public MozaicCanvas Canvas { get; set; }
@@ -83,11 +101,47 @@ namespace Akem.VM
             }
         }
 
+        public ObservableCollection<MozaicStatistic> MozaicStatistics
+        {
+            get { return _mozaicStatistics; }
+            set { _mozaicStatistics = value; OnPropertyChanged(); }
+        }
+
         public RenderViewModel()
         {
             RenderCommand = new RenderCommand(this);
             Width = 500;
             Height = 500;
+            KeepRatio = true;
+        }
+
+        private double GetRatio(Func<Size, double> rationFunc, int current)
+        {
+            if (string.IsNullOrEmpty(FileName))
+            {
+                return current;
+            }
+
+            var bitmap = new Bitmap(FileName);
+            return rationFunc(bitmap.Size);
+        }
+
+        private void AdjsutHeight()
+        {
+            _isAdjusting = true;
+
+            Height = (int)(Width * GetRatio(size => ((double)size.Height / size.Width), Height));
+
+            _isAdjusting = false;
+        }
+
+        private void AdjustWidth()
+        {
+            _isAdjusting = true;
+
+            Width = (int)(Height * GetRatio(size => (double)size.Width / size.Height, Width));
+
+            _isAdjusting = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

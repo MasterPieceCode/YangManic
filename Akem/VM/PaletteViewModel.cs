@@ -15,12 +15,39 @@ using Processing;
 
 namespace Akem.VM
 {
+     public class MozaicStatistic
+    {
+         public int Id { get { return Tile.Id; } }
+         public PaletteTile Tile { get; set; }
+         public int Count { get; set; }
+    }
+
     public class PaletteViewModel: INotifyPropertyChanged
     {
         private PaletteTile _selectedTile;
+        private ObservableCollection<PaletteTile> _paletteTiles;
 
-        public ObservableCollection<PaletteTile> PaletteTiles { get; set; }
+        public ObservableCollection<PaletteTile> PaletteTiles
+        {
+            get
+            {
+                return _paletteTiles ?? (_paletteTiles = GetPalleteTiles());
+            }
+        }
+
+        private ObservableCollection<PaletteTile> GetPalleteTiles()
+        {
+            var result = new ObservableCollection<PaletteTile>();
+            foreach (var tileInfo in TileLibrary.TileBase)
+            {
+                result.Add(new PaletteTile(tileInfo.Value, 10));
+            }
+
+            return result;
+        }
+
         public ObservableCollection<PaletteTile> SelectedTiles { get; set; }
+
         public ICommand SelectTileCommand { get; set; }
 
 
@@ -39,11 +66,7 @@ namespace Akem.VM
             SelectTileCommand = new SelectTileCommand(this);
             SelectedTiles = new ObservableCollection<PaletteTile>();
             SelectedTiles.CollectionChanged += SelectedTilesCollectionChanged;
-            PaletteTiles = new ObservableCollection<PaletteTile>();
-            foreach (var tileInfo in TileLibrary.TileBase)
-            {
-                PaletteTiles.Add(new PaletteTile(tileInfo.Value, 10));
-            }
+            
         }
 
         private void SelectedTilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

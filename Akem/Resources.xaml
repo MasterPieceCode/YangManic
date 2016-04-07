@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Akem.Converters"
+                    xmlns:processing="clr-namespace:Processing;assembly=Processing"
+                    xmlns:templates="clr-namespace:Akem.Templates">
+    <converters:BitmapToBitmapImageConverter  x:Key="BitmapToBitmapImageConverter"/>
+    <DataTemplate DataType="{x:Type processing:PaletteTile}">
+        <Image  Stretch="Uniform" Source="{Binding Path=Bitmap, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="40" Height="40"/>
+    </DataTemplate>
+    <Style TargetType="Control" x:Key="Basic">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style TargetType="{x:Type ToggleButton}">
+        <Setter Property="Width" Value="64"/>
+        <Setter Property="Height" Value="64"/>
+        <Setter Property="Margin" Value="2 5"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style TargetType="GroupBox" BasedOn="{StaticResource Basic}">
+        <Setter Property="Padding" Value="0 5 0 0"/>
+    </Style>
+    <Style x:Key="TileColorRectangle" TargetType="Rectangle">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+    </Style>
+    <Style x:Key="TileBitmapRectangle" TargetType="Image">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+    </Style>
+    <Style x:Key="PaletteButton" TargetType="Button" BasedOn="{StaticResource Basic}">
+        <Setter Property="Foreground" Value="LightSalmon"/>
+        <Setter Property="Background" Value="Linen"/>
+    </Style>
+    <Style x:Key="OperationButton" TargetType="Button" BasedOn="{StaticResource PaletteButton}">
+        <Setter Property="Width" Value="40"/>
+    </Style>
+    <ControlTemplate x:Key="tplFlatButton" TargetType="{x:Type Button}">
+        <Border Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          TextElement.Foreground="{TemplateBinding Foreground}"
+                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                          TextElement.FontSize="{TemplateBinding FontSize}"
+                          TextElement.FontStretch="{TemplateBinding FontStretch}"
+                          TextElement.FontWeight="{TemplateBinding FontWeight}"/>
+        </Border>
+    </ControlTemplate>
+    <Style x:Key="stlFlatButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Template" Value="{StaticResource tplFlatButton}"  />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style TargetType="{x:Type DataGridCell}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

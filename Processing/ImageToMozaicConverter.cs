@@ -70,9 +70,9 @@ namespace Processing
         }
 
 
-        public ObservableCollection<ObservableCollection<PaletteTile>> Convert()
+        public MozaicResult Convert()
         {
-            var result = new ObservableCollection<ObservableCollection<PaletteTile>>();
+            var result =new MozaicResult();
             //var convertedBitmap = new Bitmap(_gridCellWidth * _gridHorSteps, _gridCellHeight * _gridVerSteps);
             //var convertedImGraphics = Graphics.FromImage(convertedBitmap);
             //            convertedImGraphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -131,7 +131,7 @@ namespace Processing
             for (var y = 0; y < newImage.Height; y++)
             {
                 var verticalTiles = new ObservableCollection<PaletteTile>();
-                result.Add(verticalTiles);
+                result.Tiles.Add(verticalTiles);
                 for (var x = 0; x < newImage.Width; x++)
                 {
                     var pixel = newImage.GetPixel(x, y);
@@ -145,7 +145,12 @@ namespace Processing
                     SetErrorForPixel(Rgb, paletteColor, y, x, newImage.Width, newImage.Height, newImage);
 
                     verticalTiles.Add(findBestMatchTitle);
+                    if (!result.MozaicStatisitcs.ContainsKey(findBestMatchTitle.Id))
+                    {
+                        result.MozaicStatisitcs.Add(findBestMatchTitle.Id, 0);
+                    }
 
+                    result.MozaicStatisitcs[findBestMatchTitle.Id]++;
                     /*var newRgbAAZ = newColor.ToRgb();*/
                     /* convertedImGraphics.FillRectangle(
                         new SolidBrush(Color.FromARgb((int) newRgb.R, (int) newRgb.G, (int) newRgb.B)), x, y, 1, 1);*/

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -45,14 +46,32 @@ namespace Akem.Commands
 
         public void Execute(object parameter)
         {
-            _renderViewModel.MozaicTiles = new ImageToMozaicConverter(_renderViewModel.FileName, TileSize, _renderViewModel.Tiles.SelectedTiles, _renderViewModel.Width, _renderViewModel.Height).Convert();
-          
+            var mozaicResult = new ImageToMozaicConverter(_renderViewModel.FileName, TileSize, _renderViewModel.Tiles.SelectedTiles, _renderViewModel.Width, _renderViewModel.Height).Convert();
+            _renderViewModel.MozaicTiles = mozaicResult.Tiles;
+            FillMozaicStatisitcs(mozaicResult);
+            
             var mozaicCanvas = _renderViewModel.Canvas;
 
             mozaicCanvas.Clear();
             FillCanvasWithTiles(mozaicCanvas, _renderViewModel.Width, _renderViewModel.Grout.SelectedGrout.Thikness, _renderViewModel.Grout.SelectedGrout.Color, TileSize, TileSize, _renderViewModel.MozaicTiles);
             var drawingVisual = ImageHelper.GetFileImage(_renderViewModel.FileName, mozaicCanvas.Width, mozaicCanvas.Height);
             drawingVisual.Opacity = 0.2;
+        }
+
+        private void FillMozaicStatisitcs(MozaicResult mozaicResult)
+        {
+            _renderViewModel.MozaicStatistics = new ObservableCollection<MozaicStatistic>();
+
+            foreach (var statistic in mozaicResult.MozaicStatisitcs)
+            {
+                var mozaicStatistic = new MozaicStatistic
+                {
+                    Count = statistic.Value,
+                    Tile = _renderViewModel.Tiles.SelectedTiles.First(t => t.Id == statistic.Key)
+                };
+
+                _renderViewModel.MozaicStatistics.Add(mozaicStatistic);
+            }
         }
 
         private void FillCanvasWithTiles(MozaicCanvas canvas, int panoWidth, double grouthWidth, Color groutColor, int tileWidht, int tileHeight, IEnumerable<IEnumerable<PaletteTile>> mozaicTiles)
