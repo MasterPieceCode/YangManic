@@ -112,6 +112,11 @@ namespace Akem.Commands
         {
             var rowCount = _matrixPrints.Count/2;
 
+            if (rowCount == 0)
+            {
+                rowCount++;
+            }
+
             var stepSize = Math.Min(marginBounds.Width, marginBounds.Height) / rowCount;
 
             foreach (var matrixPrintInfoOrderedByRow in _matrixPrints.GroupBy(mp => mp.MatrixRow))
@@ -137,9 +142,9 @@ namespace Akem.Commands
             attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);    
 
             // draw tile
-            graphics.DrawImage(tile.Bitmap,
+           /* graphics.DrawImage(tile.Bitmap,
                 new Rectangle(marginBounds.Left + tileCol*stepSize, marginBounds.Top + tileRow*stepSize, stepSize,
-                    stepSize), 0, 0, tile.Bitmap.Size.Width, tile.Bitmap.Size.Height, GraphicsUnit.Pixel, attributes);
+                    stepSize), 0, 0, tile.Bitmap.Size.Width, tile.Bitmap.Size.Height, GraphicsUnit.Pixel, attributes);*/
 
             // draw tile id
             graphics.DrawString(tile.Id.ToString(),
