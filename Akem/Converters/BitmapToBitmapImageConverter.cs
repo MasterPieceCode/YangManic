@@ -15,7 +15,7 @@ namespace Akem.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var bitmap = (Bitmap)value;
-            return ImageHelper.ToBitmapImage(bitmap);
+            return bitmap != null ? ImageHelper.ToBitmapImage(bitmap) : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

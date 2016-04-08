@@ -18,7 +18,6 @@ namespace Akem.Commands
         private const int TileSize = 10;
 
         private readonly RenderViewModel _renderViewModel;
-        private MozaicResult _mozaicResult;
 
         public RenderCommand(RenderViewModel renderViewModel)
         {
@@ -56,15 +55,10 @@ namespace Akem.Commands
 
             mozaicCanvas.Clear();
             FillCanvasWithTiles(mozaicCanvas, _renderViewModel.Width, _renderViewModel.Grout.SelectedGrout.Thikness, _renderViewModel.Grout.SelectedGrout.Color, TileSize, TileSize, _renderViewModel.MozaicTiles);
-/*
-            var drawingVisual = ImageHelper.GetFileImage(_renderViewModel.FileName, mozaicCanvas.Width, mozaicCanvas.Height);
-            drawingVisual.Opacity = 0.2;
-*/
         }
 
         private void FillMozaicStatisitcs(MozaicResult mozaicResult)
         {
-            _mozaicResult = mozaicResult;
             _renderViewModel.MozaicStatistics = new ObservableCollection<MozaicStatistic>();
 
             foreach (var mozaicStatistic in mozaicResult.MozaicStatisitcs.Select(statistic => new MozaicStatistic
@@ -79,8 +73,8 @@ namespace Akem.Commands
 
         private void FillCanvasWithTiles(MozaicCanvas canvas, int panoWidth, double grouthWidth, Color groutColor, int tileWidht, int tileHeight, IEnumerable<IEnumerable<PaletteTile>> mozaicTiles)
         {
-            var clientWidth = canvas.ActualWidth;
-            var clientHeight = canvas.ActualHeight;
+            var clientWidth = canvas.Width;
+            var clientHeight = canvas.Height;
 
             var tilesCountHor = mozaicTiles.First().Count();
             var tilesCountVer = mozaicTiles.Count();

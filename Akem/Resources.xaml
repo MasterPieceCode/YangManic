@@ -4,6 +4,7 @@
                     xmlns:processing="clr-namespace:Processing;assembly=Processing"
                     xmlns:templates="clr-namespace:Akem.Templates">
     <converters:BitmapToBitmapImageConverter  x:Key="BitmapToBitmapImageConverter"/>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <DataTemplate DataType="{x:Type processing:PaletteTile}">
         <Image  Stretch="Uniform" Source="{Binding Path=Bitmap, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="40" Height="40"/>
     </DataTemplate>
@@ -11,12 +12,14 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
-    <Style TargetType="{x:Type ToggleButton}">
+    <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonStyle">
         <Setter Property="Width" Value="64"/>
         <Setter Property="Height" Value="64"/>
         <Setter Property="Margin" Value="2 5"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
+    <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ToggleButtonStyle}">
+    </Style>    
     <Style TargetType="GroupBox" BasedOn="{StaticResource Basic}">
         <Setter Property="Padding" Value="0 5 0 0"/>
     </Style>

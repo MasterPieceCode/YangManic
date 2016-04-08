@@ -78,7 +78,9 @@ namespace Akem.VM
         public bool KeepRatio { get; set; }
 
         public ICommand RenderCommand { get; set; }
+
         public MozaicCanvas Canvas { get; set; }
+        public MozaicCanvas OriginalCanvas { get; set; }
 
         public PaletteViewModel Tiles
         {

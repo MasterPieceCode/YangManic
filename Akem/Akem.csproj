@@ -75,7 +75,7 @@
     <Compile Include="VM\PaletteViewModel.cs" />
     <Compile Include="Commands\RenderCommand.cs" />
     <Compile Include="VM\RenderViewModel.cs" />
-    <Compile Include="VM\StatisitcsViewModel.cs" />
+    <Compile Include="VM\OperationViewModel.cs" />
     <Page Include="Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

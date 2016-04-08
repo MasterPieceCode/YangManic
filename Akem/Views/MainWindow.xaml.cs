@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -9,9 +10,6 @@ using Processing;
 
 namespace Akem.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -19,7 +17,7 @@ namespace Akem.Views
             InitializeComponent();
         }
 
-        private void ImagePanel_Drop(object sender, DragEventArgs e)
+        private void ImagePanelDrop(object sender, DragEventArgs e)
         {
             var fileDrop = (string[])e.Data.GetData("FileName");
             if (!fileDrop.Any())
@@ -30,13 +28,7 @@ namespace Akem.Views
             var fileName = fileDrop[0];
             SetFileName(fileName);
 
-            var mozaicCanvas = (MozaicCanvas)Resources["MozaicCanvas"];
-            mozaicCanvas.Clear();
-
-            var visual = ImageHelper.GetFileImage(fileName, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
-            mozaicCanvas.AddVisual(visual);
-
-            InitMozaicCanvas(mozaicCanvas, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
+            InitMozaicCanvas(fileName, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
         }
 
         private void SetFileName(string fileName)
@@ -44,13 +36,26 @@ namespace Akem.Views
             ((RenderViewModel) Resources["RenderViewModel"]).FileName = fileName;
         }
 
-
-        private void InitMozaicCanvas(MozaicCanvas mozaicCanvas, double width, double height)
+        private void InitMozaicCanvas(string fileName, double width, double height)
         {
+            var mozaicCanvas = (MozaicCanvas)Resources["MozaicCanvas"];
+            var originalImageCanvas = (MozaicCanvas)Resources["OriginalImageCanvas"];
+
             ImagePanel.Children.Clear();
             ImagePanel.Children.Add(mozaicCanvas);
+            ImagePanel.Children.Add(originalImageCanvas);
 
-            mozaicCanvas.Children.Clear();
+            SetCanvasSize(mozaicCanvas, width, height);
+            SetCanvasSize(originalImageCanvas, width, height);
+
+            var visual = ImageHelper.GetFileImage(fileName, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
+            originalImageCanvas.AddVisual(visual);
+        }
+
+        private static void SetCanvasSize(MozaicCanvas mozaicCanvas, double width, double height)
+        {
+            mozaicCanvas.Clear();
+         
             mozaicCanvas.Width = width;
             mozaicCanvas.Height = height;
         }
