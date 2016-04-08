@@ -39,7 +39,7 @@ namespace Processing
             _gridHorSteps = _desirableWidth / tileSize;
             _gridVerSteps = _desirableHeight / tileSize;
 
-            float scale = Math.Min((float)_gridHorSteps / _image.Width, (float)_gridVerSteps / _image.Height);         
+            var scale = Math.Min((float)_gridHorSteps / _image.Width, (float)_gridVerSteps / _image.Height);         
 
             var scaleWidth = (_image.Width *  scale);
             var scaleHeight =(_image.Height * scale);
@@ -82,7 +82,7 @@ namespace Processing
 
             var newImage = new Bitmap(_gridHorSteps, _gridVerSteps);
 
-            int c = 0;
+            var c = 0;
             for (var y = 0; y < _gridVerSteps; y++)
             {
                 //  var verticalTiles = new ObservableCollection<TileInfo>();
@@ -123,9 +123,10 @@ namespace Processing
                     // verticalTiles.Add(findBestMatchTitle);
                     // bmp.Save("Im\\"+ c++ + ".jpg");
                     //      convertedImGraphics.DrawImage(findBestMatchTitle.TileBitmap, new Rectangle(point, _gridCellSize), new Rectangle(0, 0, 240, 240), GraphicsUnit.Pixel);
-
                     imageTileGraphics.Dispose();
                 }
+
+                newImage.Save("new image.jpg");
             }
 
             for (var y = 0; y < newImage.Height; y++)
@@ -136,13 +137,13 @@ namespace Processing
                 {
                     var pixel = newImage.GetPixel(x, y);
 
-                    var Rgb = new Rgb { R = pixel.R, G = pixel.G, B = pixel.B };
+                    var rgb = new Rgb { R = pixel.R, G = pixel.G, B = pixel.B };
 
                     var findBestMatchTitle = _colorFilter.FindBestTile(new Rgb(pixel.R, pixel.G, pixel.B));
 
                     var newRgb = findBestMatchTitle.Rgb;
                     var paletteColor = new Rgb { R = newRgb.R, G = newRgb.G, B = newRgb.B };
-                    SetErrorForPixel(Rgb, paletteColor, y, x, newImage.Width, newImage.Height, newImage);
+                    SetErrorForPixel(rgb, paletteColor, y, x, newImage.Width, newImage.Height, newImage);
 
                     verticalTiles.Add(findBestMatchTitle);
                     if (!result.MozaicStatisitcs.ContainsKey(findBestMatchTitle.Id))

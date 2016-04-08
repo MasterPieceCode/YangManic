@@ -146,7 +146,6 @@ namespace Akem.Commands
                 new Font(fontFamily, (float)(stepSize * 0.3), FontStyle.Regular),
                 new SolidBrush(Color.Black),
                 new RectangleF(marginBounds.Left + tileCol * stepSize, marginBounds.Top + tileRow * stepSize, stepSize, stepSize));
-
         }
 
         public event EventHandler CanExecuteChanged;

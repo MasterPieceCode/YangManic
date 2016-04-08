@@ -27,7 +27,7 @@ namespace Akem.VM
             {
                 _width = value;
 
-                if (!_isAdjusting && KeepRatio)
+                if (!_isAdjustingRatio && KeepRatio)
                 {
                     AdjsutHeight();
                 }
@@ -36,7 +36,7 @@ namespace Akem.VM
             }
         }
 
-        private bool _isAdjusting;
+        private bool _isAdjustingRatio;
 
         public int Height
         {
@@ -45,7 +45,7 @@ namespace Akem.VM
             {
                 _height = value;
 
-                if (!_isAdjusting && KeepRatio)
+                if (!_isAdjustingRatio && KeepRatio)
                 {
                     AdjustWidth();
                 }
@@ -62,12 +62,12 @@ namespace Akem.VM
                 _fileName = value;
                 Image = new Bitmap(_fileName);
 
-                _isAdjusting = true;
+                _isAdjustingRatio = true;
 
                 Width = Image.Width;
                 Height = Image.Height;
 
-                _isAdjusting = false;
+                _isAdjustingRatio = false;
 
                 OnPropertyChanged();
             }
@@ -130,20 +130,20 @@ namespace Akem.VM
 
         private void AdjsutHeight()
         {
-            _isAdjusting = true;
+            _isAdjustingRatio = true;
 
             Height =  GetRatio(size => ((double)size.Height / size.Width), Height, Width);
 
-            _isAdjusting = false;
+            _isAdjustingRatio = false;
         }
 
         private void AdjustWidth()
         {
-            _isAdjusting = true;
+            _isAdjustingRatio = true;
 
             Width = GetRatio(size => (double)size.Width / size.Height, Width, Height);
 
-            _isAdjusting = false;
+            _isAdjustingRatio = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

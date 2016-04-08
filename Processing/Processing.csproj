@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AvgColorCalculator.cs" />
     <Compile Include="ColorFilter.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="ImageToMozaicConverter.cs" />
     <Compile Include="MozaicResult.cs" />
     <Compile Include="PaletteTile.cs" />

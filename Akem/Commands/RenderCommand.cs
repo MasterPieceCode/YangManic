@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Akem.Controls;
 using Akem.VM;
 using Processing;
@@ -17,6 +18,7 @@ namespace Akem.Commands
         private const int TileSize = 10;
 
         private readonly RenderViewModel _renderViewModel;
+        private MozaicResult _mozaicResult;
 
         public RenderCommand(RenderViewModel renderViewModel)
         {
@@ -54,12 +56,15 @@ namespace Akem.Commands
 
             mozaicCanvas.Clear();
             FillCanvasWithTiles(mozaicCanvas, _renderViewModel.Width, _renderViewModel.Grout.SelectedGrout.Thikness, _renderViewModel.Grout.SelectedGrout.Color, TileSize, TileSize, _renderViewModel.MozaicTiles);
+/*
             var drawingVisual = ImageHelper.GetFileImage(_renderViewModel.FileName, mozaicCanvas.Width, mozaicCanvas.Height);
             drawingVisual.Opacity = 0.2;
+*/
         }
 
         private void FillMozaicStatisitcs(MozaicResult mozaicResult)
         {
+            _mozaicResult = mozaicResult;
             _renderViewModel.MozaicStatistics = new ObservableCollection<MozaicStatistic>();
 
             foreach (var mozaicStatistic in mozaicResult.MozaicStatisitcs.Select(statistic => new MozaicStatistic
@@ -114,9 +119,9 @@ namespace Akem.Commands
                     var visual = new DrawingVisual();
                     var dc = visual.RenderOpen();
 
-                    var selectedBrush = new SolidColorBrush(Color.FromArgb(255, (byte)mozaicTileColumn.Rgb.R, (byte)mozaicTileColumn.Rgb.G, (byte)mozaicTileColumn.Rgb.B));
+                    var tile = _renderViewModel.Tiles.SelectedTiles.Single(t => t.Id == mozaicTileColumn.Id);
 
-                    dc.DrawRectangle(selectedBrush, null, new Rect(positionX, positionY, gridWidth, gridHeight));
+                    dc.DrawImage(tile.BitmapImage, new Rect(positionX, positionY, gridWidth, gridHeight));
 
                     dc.Close();
 
