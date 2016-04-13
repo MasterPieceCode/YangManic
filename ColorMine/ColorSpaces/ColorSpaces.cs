@@ -8,6 +8,9 @@
 
 
 //Note: This is a generated file.
+
+using System;
+using System.Runtime.Serialization;
 using ColorMine.ColorSpaces.Conversions;
 
 namespace ColorMine.ColorSpaces
@@ -23,7 +26,8 @@ namespace ColorMine.ColorSpaces
 
     }
 
-    public class Rgb : ColorSpace, IRgb
+    [Serializable]
+    public class Rgb : ColorSpace, IRgb, ISerializable
     {
         public Rgb(double r, double g, double b)
         {
@@ -53,8 +57,22 @@ namespace ColorMine.ColorSpaces
         {
             return RgbConverter.ToColor(this);
         }
-    }
 
+
+        public Rgb(SerializationInfo info, StreamingContext context)
+        {
+            R = info.GetDouble("R");
+            G = info.GetDouble("G");
+            B = info.GetDouble("B");
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("R", R);
+            info.AddValue("G", G);
+            info.AddValue("B", B);
+        }
+    }
 
 	public interface IXyz : IColorSpace
     {

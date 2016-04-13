@@ -49,6 +49,7 @@
     <Compile Include="ImageToMozaicConverter.cs" />
     <Compile Include="MozaicResult.cs" />
     <Compile Include="PaletteTile.cs" />
+    <Compile Include="ProjectInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TileInfo.cs" />
     <Compile Include="TileLibrary.cs" />

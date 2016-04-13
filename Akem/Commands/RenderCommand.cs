@@ -19,6 +19,8 @@ namespace Akem.Commands
 
         private readonly RenderViewModel _renderViewModel;
 
+        public event EventHandler<EventArgs> ExecuteCompleted = delegate {};
+
         public RenderCommand(RenderViewModel renderViewModel)
         {
             _renderViewModel = renderViewModel;
@@ -55,6 +57,8 @@ namespace Akem.Commands
 
             mozaicCanvas.Clear();
             FillCanvasWithTiles(mozaicCanvas, _renderViewModel.Width, _renderViewModel.Grout.SelectedGrout.Thikness, _renderViewModel.Grout.SelectedGrout.Color, TileSize, TileSize, _renderViewModel.MozaicTiles);
+
+            ExecuteCompleted(this, EventArgs.Empty);
         }
 
         private void FillMozaicStatisitcs(MozaicResult mozaicResult)

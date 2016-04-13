@@ -26,12 +26,19 @@ namespace Akem.VM
     {
         private PaletteTile _selectedTile;
         private ObservableCollection<PaletteTile> _paletteTiles;
+        private ObservableCollection<PaletteTile> _selectedTiles;
 
         public ObservableCollection<PaletteTile> PaletteTiles
         {
             get
             {
                 return _paletteTiles ?? (_paletteTiles = GetPalleteTiles());
+            }
+
+            set
+            {
+                _paletteTiles = value;
+                OnPropertyChanged();
             }
         }
 
@@ -46,7 +53,15 @@ namespace Akem.VM
             return result;
         }
 
-        public ObservableCollection<PaletteTile> SelectedTiles { get; set; }
+        public ObservableCollection<PaletteTile> SelectedTiles
+        {
+            get { return _selectedTiles; }
+            set
+            {
+                _selectedTiles = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand SelectTileCommand { get; set; }
 

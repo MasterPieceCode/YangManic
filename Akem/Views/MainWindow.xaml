@@ -31,7 +31,8 @@
             Visibility="{Binding  Source={StaticResource OperationViewModel}, Path=IsOriginalImageDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <vm:RenderViewModel x:Key="RenderViewModel" Canvas="{StaticResource MozaicCanvas}" OriginalCanvas="{StaticResource OriginalImageCanvas}"
                             Grout="{StaticResource GroutViewModel}"
-                            Tiles="{StaticResource PaletteViewModel}"/>
+                            Tiles="{StaticResource PaletteViewModel}"
+                            OperationViewModel="{StaticResource OperationViewModel}"/>
         <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter"/>
         <converters:PhysicalSizeToSizeUnitConverter x:Key="PhysicalSizeToSizeUnitConverter"/>
         <converters:TextToIntConverter  x:Key="TextToIntConverter"/>
@@ -79,7 +80,9 @@
         </Grid.RowDefinitions>
             <Border BorderBrush="Gray" BorderThickness="0 0 2 0" Grid.Row="0">
             <ScrollViewer  Name="ImageScrollViewerViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
-                            Drop="ImagePanelDrop" AllowDrop="True"  BorderThickness="3">
+                            Drop="ImagePanelDrop" AllowDrop="True"  BorderThickness="3"
+                           Width="{Binding Source={StaticResource RenderViewModel}, Path=CanvasWidth, Mode=OneWayToSource}"
+                           Height="{Binding Source={StaticResource RenderViewModel}, Path=CanvasHeight, Mode=OneWayToSource}">
                 <ScrollViewer.Background>
                     <VisualBrush TileMode="Tile" Viewport="0,0,0.25,0.25">
                         <VisualBrush.Visual>
@@ -95,7 +98,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <DockPanel Name="ImagePanel" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TextBlock FontSize="15" Foreground="LightGray">Drag your image here or click the area</TextBlock>
+                        <ContentControl Content="{StaticResource OriginalImageCanvas}"/>
+                        <ContentControl Content="{StaticResource MozaicCanvas}"/>
                     </DockPanel>
                 </Grid>
             </ScrollViewer>
@@ -198,11 +202,13 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=RenderCommand}">RENDER</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Command="{StaticResource ShowStatisticsCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicStatistics}">STAT</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Command="{StaticResource PrintCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicTiles}">PRINT</Button>
-                        <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center">SAVE</Button>
+                        <Button Style="{StaticResource OperationButton}" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=SaveCommand}">SAVE</Button>
+                        <Button Style="{StaticResource OperationButton}" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Center"  DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=LoadCommand}">LOAD</Button>
                     </Grid>
                 </StackPanel>
             </GroupBox>

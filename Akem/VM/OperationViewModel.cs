@@ -33,6 +33,7 @@ namespace Akem.VM
         public bool IsMozaicDisplayed
         {
             get { return !_isOriginalImageDisplayed; }
+            set { IsOriginalImageDisplayed = !value; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -21,7 +21,7 @@ namespace Akem.Controls
             get { return Visuals.Count; }
         }
 
-        protected List<Visual> Visuals { get; private set; }
+        public List<Visual> Visuals { get; private set; }
 
         // Provide a required override for the VisualChildrenCount property. 
 

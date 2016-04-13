@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Akem.Annotations;
 using Akem.Controls;
 using Akem.VM;
 using Processing;
@@ -15,6 +19,14 @@ namespace Akem.Views
         public MainWindow()
         {
             InitializeComponent();
+            ImageScrollViewerViewer.SizeChanged += ImageScrollViewerViewerSizeChanged;
+        }
+
+        private void ImageScrollViewerViewerSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var rvm = ((RenderViewModel)Resources["RenderViewModel"]);
+            rvm.CanvasWidth = ImageScrollViewerViewer.ActualWidth;
+            rvm.CanvasHeight = ImageScrollViewerViewer.ActualHeight;
         }
 
         private void ImagePanelDrop(object sender, DragEventArgs e)
@@ -27,37 +39,11 @@ namespace Akem.Views
 
             var fileName = fileDrop[0];
             SetFileName(fileName);
-
-            InitMozaicCanvas(fileName, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
         }
 
         private void SetFileName(string fileName)
         {
             ((RenderViewModel) Resources["RenderViewModel"]).FileName = fileName;
-        }
-
-        private void InitMozaicCanvas(string fileName, double width, double height)
-        {
-            var mozaicCanvas = (MozaicCanvas)Resources["MozaicCanvas"];
-            var originalImageCanvas = (MozaicCanvas)Resources["OriginalImageCanvas"];
-
-            ImagePanel.Children.Clear();
-            ImagePanel.Children.Add(mozaicCanvas);
-            ImagePanel.Children.Add(originalImageCanvas);
-
-            SetCanvasSize(mozaicCanvas, width, height);
-            SetCanvasSize(originalImageCanvas, width, height);
-
-            var visual = ImageHelper.GetFileImage(fileName, ImageScrollViewerViewer.ActualWidth, ImageScrollViewerViewer.ActualHeight);
-            originalImageCanvas.AddVisual(visual);
-        }
-
-        private static void SetCanvasSize(MozaicCanvas mozaicCanvas, double width, double height)
-        {
-            mozaicCanvas.Clear();
-         
-            mozaicCanvas.Width = width;
-            mozaicCanvas.Height = height;
         }
 
         private void GrouteColorSelected(object sender, MouseButtonEventArgs e)
@@ -85,6 +71,24 @@ namespace Akem.Views
                 m.ScaleAtPrepend(1 / 1.1, 1 / 1.1, p.X, p.Y);
 
             panel.RenderTransform = new MatrixTransform(m);
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+
+
+         var formatter = new BinaryFormatter();
+
+/*
+         var fs = new FileStream("project.dat", FileMode.OpenOrCreate);
+         formatter.Serialize(fs, projectInfo);
+*/
+
+
+        var fs = new FileStream("project.dat", FileMode.Open);
+        var res = (ProjectInfo)formatter.Deserialize(fs);
+
+           
         }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Markup;
 using Akem.Annotations;
 using Akem.Commands;
 using Akem.Controls;
@@ -19,6 +20,9 @@ namespace Akem.VM
         private string _fileName;
         private PaletteViewModel _tiles;
         private ObservableCollection<MozaicStatistic> _mozaicStatistics;
+
+        public double CanvasWidth { get; set; }
+        public double CanvasHeight { get; set; }
 
         public int Width
         {
@@ -37,6 +41,7 @@ namespace Akem.VM
         }
 
         private bool _isAdjustingRatio;
+        private bool _keepRatio;
 
         public int Height
         {
@@ -53,13 +58,13 @@ namespace Akem.VM
             }
         }
 
-
         public string FileName
         {
             get { return _fileName; }
             set
             {
                 _fileName = value;
+
                 Image = new Bitmap(_fileName);
 
                 _isAdjustingRatio = true;
@@ -67,17 +72,48 @@ namespace Akem.VM
                 Width = Image.Width;
                 Height = Image.Height;
 
+                InitMozaicCanvas();
+
                 _isAdjustingRatio = false;
 
                 OnPropertyChanged();
+
+                OperationViewModel.IsOriginalImageDisplayed = true;
             }
+        }
+
+        private void InitMozaicCanvas()
+        {
+            SetCanvasSize(Canvas);
+            SetCanvasSize(OriginalCanvas);
+
+            var visual = ImageHelper.GetFileImage(FileName, CanvasWidth, CanvasHeight);
+            OriginalCanvas.AddVisual(visual);
+        }
+
+        private void SetCanvasSize(MozaicCanvas mozaicCanvas)
+        {
+            mozaicCanvas.Clear();
+
+            mozaicCanvas.Width = CanvasWidth;
+            mozaicCanvas.Height = CanvasHeight;
         }
 
         public Bitmap Image { get; private set; }
 
-        public bool KeepRatio { get; set; }
+        public bool KeepRatio
+        {
+            get { return _keepRatio; }
+            set {
+                _keepRatio = value;
+                AdjsutHeight();
+                OnPropertyChanged();
+            }
+        }
 
-        public ICommand RenderCommand { get; set; }
+        public RenderCommand RenderCommand { get; set; }
+        public LoadCommand LoadCommand { get; set; }
+        public SaveCommand SaveCommand { get; set; }
 
         public MozaicCanvas Canvas { get; set; }
         public MozaicCanvas OriginalCanvas { get; set; }
@@ -97,6 +133,7 @@ namespace Akem.VM
         }
 
         public GroutViewModel Grout { get; set; }
+        public OperationViewModel OperationViewModel { get; set; }
 
         public ObservableCollection<ObservableCollection<PaletteTile>> MozaicTiles
         {
@@ -117,7 +154,15 @@ namespace Akem.VM
         public RenderViewModel()
         {
             RenderCommand = new RenderCommand(this);
+            LoadCommand = new LoadCommand(this);
+            SaveCommand = new SaveCommand(this);
+            RenderCommand.ExecuteCompleted += RenderCommandCompleted;
             KeepRatio = true;
+        }
+
+        private void RenderCommandCompleted(object sender, EventArgs e)
+        {
+            OperationViewModel.IsMozaicDisplayed = true;
         }
 
         private int GetRatio(Func<Size, double> ratio, int current, int oppositeDimension)

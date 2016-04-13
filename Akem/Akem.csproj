@@ -58,7 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\LoadCommand.cs" />
     <Compile Include="Commands\PrintCommand.cs" />
+    <Compile Include="Commands\SaveCommand.cs" />
     <Compile Include="Commands\ShowStatisticsCommand.cs" />
     <Compile Include="Converters\BitmapToBitmapImageConverter.cs" />
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
