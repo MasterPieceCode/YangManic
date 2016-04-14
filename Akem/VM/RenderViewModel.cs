@@ -134,6 +134,7 @@ namespace Akem.VM
 
         public GroutViewModel Grout { get; set; }
         public OperationViewModel OperationViewModel { get; set; }
+        public StatusViewModel StatusViewModel { get; set; }
 
         public ObservableCollection<ObservableCollection<PaletteTile>> MozaicTiles
         {

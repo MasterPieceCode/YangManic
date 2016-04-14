@@ -46,7 +46,7 @@ namespace Akem.Commands
                     SaveProject(fileDialog.FileName);
                     break;
                 case 2:
-                    SaveImage(fileDialog.FileName);
+                    Task.Factory.StartNew(() => SaveImage(fileDialog.FileName));
                     break;
             }
         }
@@ -75,6 +75,10 @@ namespace Akem.Commands
 
         private void SaveImage(string fileName)
         {
+            var statusViewModel = _renderViewModel.StatusViewModel;
+
+            statusViewModel.Status = "Saving image";
+
             if (_renderViewModel.MozaicTiles == null || !_renderViewModel.MozaicTiles.Any())
             {
                 MessageBox.Show("Please render first", "Unable to save", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -84,8 +88,12 @@ namespace Akem.Commands
             var height = _renderViewModel.MozaicTiles.Sum(t => _renderViewModel.Tiles.SelectedTiles.Single(ot => ot.Id == t.First().Id).Bitmap.Height);
             var width = _renderViewModel.MozaicTiles.First().Sum(t => _renderViewModel.Tiles.SelectedTiles.Single(ot => ot.Id == t.Id).Bitmap.Width);
 
+            statusViewModel.Maximum = _renderViewModel.MozaicTiles.Count*_renderViewModel.MozaicTiles.First().Count - 1;
+
             const int maxSize = 10000;
             float tileRatio = 1;
+
+            statusViewModel.Status = string.Format("Image Size {0}x{1}", width, height);
 
             if (width > maxSize && width > height)
             {
@@ -125,12 +133,16 @@ namespace Akem.Commands
                                 new Rectangle(0, 0, originalTile.Bitmap.Width, originalTile.Bitmap.Height),
                                 GraphicsUnit.Pixel);
                             colInd++;
+                            statusViewModel.ReportProgress();
                         }
 
                         rowInd++;
                     }
 
                     bitmap.Save(fileName);
+
+                    statusViewModel.ReportProgress();
+                    statusViewModel.Status = "Image Saved";
                 }
             }
         }

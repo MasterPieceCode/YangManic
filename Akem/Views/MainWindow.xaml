@@ -25,6 +25,7 @@
         <vm:GroutViewModel x:Key="GroutViewModel"/>
         <vm:PaletteViewModel x:Key="PaletteViewModel"/>
         <vm:OperationViewModel x:Key="OperationViewModel"/>
+        <vm:StatusViewModel x:Key="StatusViewModel"/>
         <controls:MozaicCanvas x:Key="MozaicCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"
             Visibility="{Binding Source={StaticResource OperationViewModel}, Path=IsMozaicDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <controls:MozaicCanvas x:Key="OriginalImageCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"  
@@ -32,6 +33,7 @@
         <vm:RenderViewModel x:Key="RenderViewModel" Canvas="{StaticResource MozaicCanvas}" OriginalCanvas="{StaticResource OriginalImageCanvas}"
                             Grout="{StaticResource GroutViewModel}"
                             Tiles="{StaticResource PaletteViewModel}"
+                            StatusViewModel="{StaticResource StatusViewModel}"
                             OperationViewModel="{StaticResource OperationViewModel}"/>
         <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter"/>
         <converters:PhysicalSizeToSizeUnitConverter x:Key="PhysicalSizeToSizeUnitConverter"/>
@@ -204,7 +206,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=RenderCommand}">RENDER</Button>
+                        <Button Background="{x:Null}" Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=RenderCommand}">RENDER</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Command="{StaticResource ShowStatisticsCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicStatistics}">STAT</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Command="{StaticResource PrintCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicTiles}">PRINT</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=SaveCommand}">SAVE</Button>
@@ -213,8 +215,24 @@
                 </StackPanel>
             </GroupBox>
         </StackPanel>
-        <StatusBar Grid.Column="0" Grid.Row="1">
-            <StatusBarItem Height="20"/> 
+        <StatusBar Grid.Column="0" Grid.Row="1" Height="20">
+            <StatusBarItem Height="20" Width="200">
+                <TextBlock Foreground="Black" Margin="5,0,0,0" DataContext="{StaticResource StatusViewModel}" Text="{Binding Status}"/>
+                </StatusBarItem>
+                <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ProgressBar  Orientation="Horizontal" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" DataContext="{StaticResource StatusViewModel}" Value="{Binding Percent, Mode=OneWay}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                            <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Percent}" Value="0">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                            </Style.Triggers>
+                            </Style>
+                    </ProgressBar.Style>
+                    </ProgressBar>
+                </StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

@@ -75,15 +75,12 @@ namespace Akem.Views
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-
-
          var formatter = new BinaryFormatter();
 
 /*
          var fs = new FileStream("project.dat", FileMode.OpenOrCreate);
          formatter.Serialize(fs, projectInfo);
 */
-
 
         var fs = new FileStream("project.dat", FileMode.Open);
         var res = (ProjectInfo)formatter.Deserialize(fs);
