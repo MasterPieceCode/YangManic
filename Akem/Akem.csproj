@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>appicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -736,6 +739,9 @@
     <Resource Include="Tiles\6\A92.jpg" />
     <Resource Include="Tiles\6\A95.jpg" />
     <Resource Include="Tiles\6\A96a.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="appicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

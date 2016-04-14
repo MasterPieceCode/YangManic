@@ -2,14 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Akem.Controls;
 using Akem.VM;
 using Processing;
+using Color = System.Windows.Media.Color;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Akem.Commands
 {
@@ -79,7 +87,6 @@ namespace Akem.Commands
         {
             var clientWidth = canvas.Width;
             var clientHeight = canvas.Height;
-
             var tilesCountHor = mozaicTiles.First().Count();
             var tilesCountVer = mozaicTiles.Count();
 
@@ -101,13 +108,15 @@ namespace Akem.Commands
             canvas.Background = new SolidColorBrush(groutColor);
             canvas.Width = gridWidth * tilesCountHor;
             canvas.Height = gridHeight * tilesCountVer;
+         //   canvas.CacheMode = new BitmapCache { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
+
             //   var pen = new Pen(new SolidColorBrush(groutColor), groutWidth);
             //            var gridHeight = gridWidth *  ((double)tileHeight / tileWidht);
 
             var colInd = 0;
             var rowInd = 0;
 
-            foreach (var mozaicTileRow in mozaicTiles)
+             foreach (var mozaicTileRow in mozaicTiles)
             {
                 colInd = 0;
                 foreach (var mozaicTileColumn in mozaicTileRow)
@@ -132,6 +141,125 @@ namespace Akem.Commands
             }
         }
 
+
+        // using multi tasks to add tiles to canvas
+        private void AddUsingMultiTasks(MozaicCanvas canvas, IEnumerable<IEnumerable<PaletteTile>> mozaicTiles, int tilesCountVer, int tilesCountHor,
+            double gridWidth, double gridHeight, double penGroutWidth)
+        {
+            var tileList = mozaicTiles.ToList();
+
+            var tasks = new List<Task>();
+            for (var i = 0; i < tilesCountVer; i++)
+            {
+                var tiles = new PaletteTile[1, tilesCountHor];
+
+                var paletteTiles = tileList[i].ToArray();
+                for (var j = 0; j < paletteTiles.Length; j++)
+                {
+                    tiles[0, j] = paletteTiles[j];
+                }
+
+                var renderContext = new RenderContext(i, 0, tiles);
+                DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth);
+                tasks.Add(
+                    Task.Factory.StartNew(() => DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth)));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+        }
+
+
+        // writing tiles on one bitmap and add it to canvas
+        private void AddAsWritableBitmap(MozaicCanvas canvas, IEnumerable<IEnumerable<PaletteTile>> mozaicTiles, double gridWidth, double penGroutWidth,
+            double gridHeight, int rowInd)
+        {
+            int colInd;
+            var writeableBitmap = new WriteableBitmap((int) canvas.Width, (int) canvas.Height, 96, 96, PixelFormats.Bgra32, null);
+
+            foreach (var mozaicTileRow in mozaicTiles)
+            {
+                colInd = 0;
+                foreach (var mozaicTileColumn in mozaicTileRow)
+                {
+                    var positionX = (gridWidth + penGroutWidth)*colInd;
+                    var positionY = (gridHeight + penGroutWidth)*rowInd;
+
+                    var tile = _renderViewModel.Tiles.SelectedTiles.Single(t => t.Id == mozaicTileColumn.Id);
+
+                    var newPosition = new Int32Rect(0, 0, tile.Bitmap.Width, tile.Bitmap.Height);
+
+                    writeableBitmap.WritePixels(newPosition, tile.Bytes, 944, (int) positionX, (int) positionY);
+
+                    colInd++;
+                }
+
+                rowInd++;
+            }
+
+            var visual = new DrawingVisual();
+            var dc = visual.RenderOpen();
+            dc.DrawImage(writeableBitmap, new Rect(0, 0, writeableBitmap.Width, writeableBitmap.Height));
+
+            dc.Close();
+
+            canvas.AddVisual(visual);
+        }
+
+
+        private void DrawRenderContext(RenderContext renderContext, MozaicCanvas canvas, double gridWidth, double gridHeight, double penGroutWidth)
+        {
+            var stopWatch = new Stopwatch();
+            var rowInd = renderContext.StartRowInd;
+
+            for (var i = 0; i < renderContext.Tiles.GetLength(0); i++)
+            {
+                var colInd = renderContext.StartColInd;
+
+                for (var j = 0; j < renderContext.Tiles.GetLength(1); j++)
+                {
+                    var mozaicTile = renderContext.Tiles[i, j];
+                    var positionX = (gridWidth + penGroutWidth)*(colInd + j);
+                    var positionY = (gridHeight + penGroutWidth)*(rowInd + i);
+
+                    var tile = _renderViewModel.Tiles.SelectedTiles.Single(t => t.Id == mozaicTile.Id);
+
+
+                    canvas.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var visual = new DrawingVisual();
+
+                        var dc = visual.RenderOpen();
+                        dc.DrawImage(tile.BitmapImage, new Rect(positionX, positionY, gridWidth, gridHeight));
+//                        stopWatch.Start();
+                        dc.Close();
+
+
+                     //   stopWatch.Stop();
+
+                    ///    Debug.WriteLine(stopWatch.ElapsedMilliseconds);
+
+                        canvas.AddVisual(visual);
+
+                    }
+                    ), DispatcherPriority.Normal);
+                }
+            }
+        }
+
         public event EventHandler CanExecuteChanged;
+    }
+
+    public class RenderContext
+    {
+        public RenderContext(int startRowInd, int startColInd, PaletteTile[,] tiles)
+        {
+            StartColInd = startColInd;
+            StartRowInd = startRowInd;
+            Tiles = tiles;
+        }
+
+        public int StartColInd { get; private set; }
+        public int StartRowInd { get; private set; }
+        public PaletteTile[,] Tiles { get; private set; }
     }
 }
