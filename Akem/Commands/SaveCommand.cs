@@ -70,7 +70,14 @@ namespace Akem.Commands
                 PaletteTiles = _renderViewModel.Tiles.PaletteTiles
             };
 
-            projectInfo.Save(fileName);
+            try
+            {
+                projectInfo.Save(fileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Unable to save project \r\n. {0}", ex.Message));                
+            }
         }
 
         private void SaveImage(string fileName)

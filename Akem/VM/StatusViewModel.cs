@@ -71,7 +71,8 @@ namespace Akem.VM
             var handler = PropertyChanged;
             if (handler != null)
             {
-                Task.Factory.StartNew(() => handler(this, new PropertyChangedEventArgs(propertyName)), new CancellationToken(), TaskCreationOptions.None, _scheduler);
+                handler(this, new PropertyChangedEventArgs(propertyName));
+                //Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => handler(this, new PropertyChangedEventArgs(propertyName))));                
             }
         }
     }

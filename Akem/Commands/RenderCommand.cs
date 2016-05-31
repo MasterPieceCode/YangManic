@@ -10,11 +10,13 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Akem.Controls;
+using Akem.Views;
 using Akem.VM;
 using Processing;
 using Color = System.Windows.Media.Color;
@@ -57,13 +59,33 @@ namespace Akem.Commands
                    && _renderViewModel.Tiles.SelectedTiles.Count > 0;
         }
 
-        public async void Execute(object parameter)
+        public void Execute(object parameter)
         {
-            RunAsync();
-        }
+            WaitWindow waitWindow = null;
 
-        private void  RunAsync()
-        {
+            var thread = new Thread(() =>
+            {
+                waitWindow = new WaitWindow();
+                waitWindow.Show();
+                waitWindow.BringIntoView();
+                waitWindow.ShowInTaskbar = false;
+                waitWindow.Closed += (sender, e) =>
+                waitWindow.Dispatcher.InvokeShutdown();
+
+                Dispatcher.Run();
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+
+            var mozaicCanvas = _renderViewModel.Canvas;
+
+            mozaicCanvas.Dispatcher.InvokeAsync(() =>
+            {
+                waitWindow.Dispatcher.Invoke(waitWindow.Close);
+            //    _statusViewModel.Status = "Rendering finished";
+            }, DispatcherPriority.Loaded);
+
             _statusViewModel = _renderViewModel.StatusViewModel;
 
             _statusViewModel.Status = "Finding best matches from pallete";
@@ -76,13 +98,11 @@ namespace Akem.Commands
             var rows = mozaicResult.Tiles.Count;
 
             _statusViewModel.Status = string.Format("Matches found. There will be mozaic {0}x{1} tiles", columns, rows);
-            _statusViewModel.Maximum = columns*rows;
+            _statusViewModel.Maximum = columns * rows;
 
             _renderViewModel.MozaicTiles = mozaicResult.Tiles;
 
             FillMozaicStatisitcs(mozaicResult);
-
-            var mozaicCanvas = _renderViewModel.Canvas;
 
             mozaicCanvas.Clear();
 
@@ -90,8 +110,6 @@ namespace Akem.Commands
                 _renderViewModel.Grout.SelectedGrout.Color, TileSize, TileSize, _renderViewModel.MozaicTiles);
 
             ExecuteCompleted(this, EventArgs.Empty);
-
-            _statusViewModel.Status = "Rendering finished";
         }
 
         private void FillMozaicStatisitcs(MozaicResult mozaicResult)
@@ -169,16 +187,16 @@ namespace Akem.Commands
                 rowInd++;
             }*/
 
-            Task.Factory.StartNew(()=> AddUsingMultiTasks(canvas, mozaicTiles, tilesCountVer, tilesCountHor, gridWidth, gridHeight, penGroutWidth));
-        }
+            AddUsingMultiTasks(canvas, mozaicTiles, tilesCountVer, tilesCountHor, gridWidth, gridHeight, penGroutWidth);
 
+
+        }
 
         // using multi tasks to add tiles to canvas
         private  void AddUsingMultiTasks(MozaicCanvas canvas, IEnumerable<IEnumerable<PaletteTile>> mozaicTiles, int tilesCountVer, int tilesCountHor,
             double gridWidth, double gridHeight, double penGroutWidth)
         {
             var tileList = mozaicTiles.ToList();
-            _statusViewModel.Maximum = tilesCountVer;
             for (var i = 0; i < tilesCountVer; i++)
             {
                 var tiles = new PaletteTile[1, tilesCountHor];
@@ -190,16 +208,15 @@ namespace Akem.Commands
                 }
 
                 var renderContext = new RenderContext(i, 0, tiles);
-                DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth);
+            //    DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth);
 
-/*
+
                 //DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth);
-                tasks.Add(Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() =>
                 {
                     DrawRenderContext(renderContext, canvas, gridWidth, gridHeight, penGroutWidth);
-                    _statusViewModel.ReportProgress();
-                }));
-*/
+                });
+
             }
         }
 
@@ -243,7 +260,6 @@ namespace Akem.Commands
 
         private void DrawRenderContext(RenderContext renderContext, MozaicCanvas canvas, double gridWidth, double gridHeight, double penGroutWidth)
         {
-            var stopWatch = new Stopwatch();
             var rowInd = renderContext.StartRowInd;
 
             for (var i = 0; i < renderContext.Tiles.GetLength(0); i++)
@@ -268,13 +284,7 @@ namespace Akem.Commands
                         var dc = visual.RenderOpen();
                         dc.DrawImage(tile.BitmapImage, new Rect(positionX, positionY, gridWidth, gridHeight));
 
-//                        stopWatch.Start();
                         dc.Close();
-
-
-                     //   stopWatch.Stop();
-
-                    ///    Debug.WriteLine(stopWatch.ElapsedMilliseconds);
 
                         canvas.AddVisual(visual);
 

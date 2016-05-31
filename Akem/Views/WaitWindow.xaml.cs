@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Akem.Views
 {
     /// <summary>
-    /// Interaction logic for ProgressCursor.xaml
+    /// Interaction logic for WaitWindow.xaml
     /// </summary>
-    public partial class ProgressCursor : Window
+    public partial class WaitWindow : Window
     {
-        public ProgressCursor()
+        public WaitWindow()
         {
             InitializeComponent();
         }

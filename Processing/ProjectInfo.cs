@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 
 namespace Processing
 {
@@ -50,16 +51,37 @@ namespace Processing
         {
             using (var fs = new FileStream(fileName, FileMode.Open))
             {
-                return (ProjectInfo)_binaryformatter.Deserialize(fs);
+                try
+                {
+                    return (ProjectInfo)_binaryformatter.Deserialize(fs);
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex);
+                    throw;
+                }
             }
         }
 
         public void Save(string fileName)
         {
-            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(fileName, FileMode.Create))
             {
-                _binaryformatter.Serialize(fs, this);
+                try
+                {
+                    _binaryformatter.Serialize(fs, this);
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex);
+                    throw;
+                }
             }
+        }
+
+        private static void LogException(Exception ex)
+        {
+            File.AppendAllText("log.txt", string.Format("{0}: {1}\r\n{2}\r\n", DateTime.Now, ex.Message, ex.StackTrace));
         }
     }
 }

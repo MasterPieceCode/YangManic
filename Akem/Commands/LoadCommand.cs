@@ -37,7 +37,15 @@ namespace Akem.Commands
                     return;
                 };
 
-                projectInfo = ProjectInfo.Load(fileDialog.FileName);
+                try
+                {
+                    projectInfo = ProjectInfo.Load(fileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(string.Format("Unable to load project \r\n. {0}", ex.Message));
+                    return;
+                }
             }
 
             _renderViewModel.FileName = projectInfo.FileName;

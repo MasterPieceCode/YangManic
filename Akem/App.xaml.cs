@@ -13,5 +13,14 @@ namespace Akem
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
+        }
+
+        private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.LogException((Exception)e.ExceptionObject);
+        }
     }
 }
