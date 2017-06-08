@@ -9,13 +9,13 @@ namespace Processing
 {
     public class MozaicResult
     {
-        public Dictionary<int, int> MozaicStatisitcs { get; private set; }
+        public Dictionary<string, int> MozaicStatisitcs { get; private set; }
         public ObservableCollection<ObservableCollection<PaletteTile>> Tiles { get; private set; }
 
         public MozaicResult()
         {
             Tiles = new ObservableCollection<ObservableCollection<PaletteTile>>();
-            MozaicStatisitcs = new Dictionary<int, int>();
+            MozaicStatisitcs = new Dictionary<string, int>();
         }
     }
 }

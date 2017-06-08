@@ -152,6 +152,7 @@
                             <Rectangle Fill="DimGray" Style="{StaticResource GroutColorRectangle}"/>
                             <Rectangle Fill="LightGray" Style="{StaticResource GroutColorRectangle}"/>
                             <Rectangle Fill="Yellow" Style="{StaticResource GroutColorRectangle}"/>
+                            <Rectangle Fill="LightBlue" Style="{StaticResource GroutColorRectangle}"/>
                             <Rectangle Fill="Coral" Style="{StaticResource GroutColorRectangle}"/>
                         </WrapPanel>
                         <ComboBox DataContext="{StaticResource GroutViewModel}" Margin="0 5 0 0" VerticalAlignment="Center" Background="{Binding RelativeSource={RelativeSource FindAncestor,
@@ -209,6 +210,7 @@
                         <Button Background="{x:Null}" Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=RenderCommand}">RENDER</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" Command="{StaticResource ShowStatisticsCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicStatistics}">STAT</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Command="{StaticResource PrintCommand}" CommandParameter="{Binding Source={StaticResource RenderViewModel}, Path=MozaicTiles}">PRINT</Button>
+                        <Button Style="{StaticResource OperationButton}" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center">MAP</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Center" DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=SaveCommand}">SAVE</Button>
                         <Button Style="{StaticResource OperationButton}" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Center"  DataContext="{StaticResource RenderViewModel}" Command="{Binding Path=LoadCommand}">LOAD</Button>
                     </Grid>

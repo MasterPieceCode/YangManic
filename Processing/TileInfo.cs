@@ -7,6 +7,6 @@ namespace Processing
     {
         public Bitmap TileBitmap { get; set; }
         public Rgb Rgb { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

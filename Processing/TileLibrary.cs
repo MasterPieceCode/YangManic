@@ -10,11 +10,11 @@ namespace Processing
 {
     public class TileLibrary
     {
-        public static Dictionary<int, TileInfo> TileBase { get; private set; }
+        public static Dictionary<string, TileInfo> TileBase { get; private set; }
 
         static TileLibrary()
         {
-            TileBase = new Dictionary<int, TileInfo>();
+            TileBase = new Dictionary<string, TileInfo>();
             LoadContainer();
         }
 
@@ -40,9 +40,15 @@ namespace Processing
                             i++;
                             //
             */
-                var tileInfo = new TileInfo {TileBitmap = bitmap};
-                tileInfo.Rgb = avgColorCalculator.Calculate(bitmap);
-                tileInfo.Id = i++;
+
+                var tileInfo = new TileInfo
+                {
+                    TileBitmap = bitmap,
+                    Rgb = avgColorCalculator.Calculate(bitmap),
+                };
+
+                tileInfo.Id = Path.GetFileNameWithoutExtension(tileImageFile.Name);
+
                 TileBase.Add(tileInfo.Id, tileInfo);
             }
         }

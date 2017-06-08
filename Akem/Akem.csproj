@@ -69,7 +69,6 @@
     <Compile Include="Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Converters\PhysicalSizeToSizeUnitConverter.cs" />
     <Compile Include="Converters\TextToIntConverter.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Templates\TileTemplateSelector.cs" />
     <Compile Include="Views\WaitWindow.xaml.cs">
@@ -148,6 +147,103 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Tiles\All\A01.jpg" />
+    <Resource Include="Tiles\All\A02.jpg" />
+    <Resource Include="Tiles\All\A03.jpg" />
+    <Resource Include="Tiles\All\A04%281%29_2008816105126.jpg" />
+    <Resource Include="Tiles\All\A05.jpg" />
+    <Resource Include="Tiles\All\A06.jpg" />
+    <Resource Include="Tiles\All\A07.jpg" />
+    <Resource Include="Tiles\All\A09.jpg" />
+    <Resource Include="Tiles\All\A11.jpg" />
+    <Resource Include="Tiles\All\A12.jpg" />
+    <Resource Include="Tiles\All\A13.jpg" />
+    <Resource Include="Tiles\All\A14.jpg" />
+    <Resource Include="Tiles\All\A15.jpg" />
+    <Resource Include="Tiles\All\A16.jpg" />
+    <Resource Include="Tiles\All\A17.jpg" />
+    <Resource Include="Tiles\All\A18.jpg" />
+    <Resource Include="Tiles\All\A19.jpg" />
+    <Resource Include="Tiles\All\A20a.jpg" />
+    <Resource Include="Tiles\All\A21.jpg" />
+    <Resource Include="Tiles\All\A22_2008816105758.jpg" />
+    <Resource Include="Tiles\All\A23.jpg" />
+    <Resource Include="Tiles\All\A25a.jpg" />
+    <Resource Include="Tiles\All\A26a_200881611237.jpg" />
+    <Resource Include="Tiles\All\A30a.jpg" />
+    <Resource Include="Tiles\All\A32a.jpg" />
+    <Resource Include="Tiles\All\A33.jpg" />
+    <Resource Include="Tiles\All\A34.jpg" />
+    <Resource Include="Tiles\All\A35a.jpg" />
+    <Resource Include="Tiles\All\A36a.jpg" />
+    <Resource Include="Tiles\All\A38b.jpg" />
+    <Resource Include="Tiles\All\A42a.jpg" />
+    <Resource Include="Tiles\All\A43a.jpg" />
+    <Resource Include="Tiles\All\A44a.jpg" />
+    <Resource Include="Tiles\All\A45.jpg" />
+    <Resource Include="Tiles\All\A49a.jpg" />
+    <Resource Include="Tiles\All\A52%281%29_2008816111742.jpg" />
+    <Resource Include="Tiles\All\A54.jpg" />
+    <Resource Include="Tiles\All\A58.jpg" />
+    <Resource Include="Tiles\All\A60.jpg" />
+    <Resource Include="Tiles\All\A62a.jpg" />
+    <Resource Include="Tiles\All\A63.jpg" />
+    <Resource Include="Tiles\All\A67.jpg" />
+    <Resource Include="Tiles\All\A73a.jpg" />
+    <Resource Include="Tiles\All\A77a.jpg" />
+    <Resource Include="Tiles\All\A82a.jpg" />
+    <Resource Include="Tiles\All\A85a.jpg" />
+    <Resource Include="Tiles\All\A86_200881612238.jpg" />
+    <Resource Include="Tiles\All\A87a.jpg" />
+    <Resource Include="Tiles\All\A90.jpg" />
+    <Resource Include="Tiles\All\A92.jpg" />
+    <Resource Include="Tiles\All\A95.jpg" />
+    <Resource Include="Tiles\All\A96a.jpg" />
+    <Resource Include="Tiles\A96.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Tiles\base\A01.jpg" />
+    <Resource Include="Tiles\base\A02.jpg" />
+    <Resource Include="Tiles\base\A03.jpg" />
+    <Resource Include="Tiles\base\A05.jpg" />
+    <Resource Include="Tiles\base\A06.jpg" />
+    <Resource Include="Tiles\base\A07.jpg" />
+    <Resource Include="Tiles\base\A09.jpg" />
+    <Resource Include="Tiles\base\A11.jpg" />
+    <Resource Include="Tiles\base\A12.jpg" />
+    <Resource Include="Tiles\base\A13.jpg" />
+    <Resource Include="Tiles\base\A14.jpg" />
+    <Resource Include="Tiles\base\A15.jpg" />
+    <Resource Include="Tiles\base\A16.jpg" />
+    <Resource Include="Tiles\base\A17.jpg" />
+    <Resource Include="Tiles\base\A18.jpg" />
+    <Resource Include="Tiles\base\A19.jpg" />
+    <Resource Include="Tiles\base\A20.jpg" />
+    <Resource Include="Tiles\base\A21.jpg" />
+    <Resource Include="Tiles\base\A22.jpg" />
+    <Resource Include="Tiles\base\A23.jpg" />
+    <Resource Include="Tiles\base\A25.jpg" />
+    <Resource Include="Tiles\base\A26.jpg" />
+    <Resource Include="Tiles\base\A30.jpg" />
+    <Resource Include="Tiles\base\A32.jpg" />
+    <Resource Include="Tiles\base\A33.jpg" />
+    <Resource Include="Tiles\base\A34.jpg" />
+    <Resource Include="Tiles\base\A35.jpg" />
+    <Resource Include="Tiles\base\A36.jpg" />
+    <Resource Include="Tiles\base\A38.jpg" />
+    <Resource Include="Tiles\base\A42.jpg" />
+    <Resource Include="Tiles\base\A43.jpg" />
+    <Resource Include="Tiles\base\A44.jpg" />
+    <Resource Include="Tiles\base\A45.jpg" />
+    <Resource Include="Tiles\base\A49.jpg" />
+    <Resource Include="Tiles\base\A60.jpg" />
+    <Resource Include="Tiles\base\A82.jpg" />
+    <Resource Include="Tiles\base\A85a.jpg" />
+    <Resource Include="Tiles\base\A87.jpg" />
+    <Resource Include="Tiles\base\A90.jpg" />
+    <Resource Include="Tiles\base\A92.jpg" />
+    <Resource Include="Tiles\base\A95.jpg" />
+    <Resource Include="Tiles\base\A96.jpg" />
     <Resource Include="background.png" />
     <Content Include="Tiles\A01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -156,9 +252,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Tiles\A03.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A04%281%29_2008816105126.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Tiles\A05.jpg">
@@ -200,99 +293,72 @@
     <Content Include="Tiles\A19.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A20a.jpg">
+    <Resource Include="Tiles\A20.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A21.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A22_2008816105758.jpg">
+    <Resource Include="Tiles\A22.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A23.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A25a.jpg">
+    <Resource Include="Tiles\A25.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A26a_200881611237.jpg">
+    </Resource>
+    <Resource Include="Tiles\A26.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A30a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A30.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A32a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A32.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A33.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Tiles\A34.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A35a.jpg">
+    <Resource Include="Tiles\A35.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A36a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A36.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A38b.jpg">
+    </Resource>
+    <Resource Include="Tiles\A38.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A42a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A42.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A43a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A43.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A44a.jpg">
+    </Resource>
+    <Resource Include="Tiles\A44.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A45.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A49a.jpg">
+    <Resource Include="Tiles\A49.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A52%281%29_2008816111742.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A54.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A58.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A60.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A62a.jpg">
+    <Resource Include="Tiles\A82.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Tiles\A85.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tiles\A63.jpg">
+    <Resource Include="Tiles\A87.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A67.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A73a.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A77a.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A82a.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A85a.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A86_200881612238.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A87a.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Tiles\A90.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -300,9 +366,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Tiles\A95.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tiles\A96a.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

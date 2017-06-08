@@ -14,7 +14,7 @@ namespace Processing
     [Serializable]
     public class PaletteTile : ISerializable
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
 
         public Rgb Rgb { get; set; }
@@ -46,7 +46,7 @@ namespace Processing
 
         public byte[] Bytes { get; set; }
 
-        protected PaletteTile(int id, double widthAndHeight, Rgb rgb)
+        protected PaletteTile(string id, double widthAndHeight, Rgb rgb)
         {
             Id = id;
             Width = widthAndHeight;
@@ -56,7 +56,7 @@ namespace Processing
 
         public PaletteTile(SerializationInfo info, StreamingContext context)
         {
-            Id = info.GetInt32("Id");
+            Id = info.GetString("Id");
             Bitmap = (Bitmap)info.GetValue("Bitmap", typeof(Bitmap));
             BitmapImage = ImageHelper.ToBitmapImage(Bitmap);
             Rgb = (Rgb)info.GetValue("Rgb", typeof(Rgb));

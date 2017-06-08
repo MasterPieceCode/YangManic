@@ -17,7 +17,7 @@ namespace Akem.VM
 {
      public class MozaicStatistic
     {
-         public int Id { get { return Tile.Id; } }
+         public string Id { get { return Tile.Id; } }
          public PaletteTile Tile { get; set; }
          public int Count { get; set; }
     }

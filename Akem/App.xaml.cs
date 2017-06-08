@@ -20,7 +20,7 @@ namespace Akem
 
         private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Logger.LogException((Exception)e.ExceptionObject);
+           // Logger.LogException((Exception)e.ExceptionObject);
         }
     }
 }
